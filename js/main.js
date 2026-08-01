@@ -50,15 +50,21 @@ function initHubLocator() {
 
   function hubCard(hub) {
     const statusLabel = hub.status === "open" ? "Open now" : "Opening soon";
+    const buyVia =
+      hub.status === "open"
+        ? "Farm-gate collection, or via local butchers &amp; farm shops"
+        : "Opening soon";
     return `
       <article class="hub-card">
         <span class="region-tag">${regionLabel(hub.region)} · ${statusLabel}</span>
         <h3>${hub.name}</h3>
-        <p class="farm-partner">Supplied by ${hub.farmPartner}</p>
+        <p class="farm-partner">Reared by ${hub.farmPartner}</p>
         <dl>
           <dt>Location</dt>
           <dd>${hub.town}, ${hub.postcode}</dd>
-          <dt>Hours</dt>
+          <dt>Buy</dt>
+          <dd>${buyVia}</dd>
+          <dt>Farm-Gate Hours</dt>
           <dd>${hub.hours}</dd>
           <dt>Contact</dt>
           <dd>${hub.phone}<br>${hub.email}</dd>

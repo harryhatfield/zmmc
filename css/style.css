@@ -140,7 +140,7 @@ section { padding: 88px 0; }
   color: var(--gold);
 }
 
-.brand .logo-mark { width: 44px; height: 44px; color: var(--gold); flex-shrink: 0; }
+.brand .logo-mark { width: 44px; height: auto; flex-shrink: 0; }
 
 .brand-name {
   font-family: var(--font-heading);
@@ -253,7 +253,7 @@ section { padding: 88px 0; }
   justify-content: center;
   overflow: hidden;
 }
-.hero-art .logo-mark { width: 46%; height: 46%; color: var(--gold); opacity: 0.9; }
+.hero-art .logo-mark { width: 46%; height: auto; opacity: 0.95; }
 .hero-art .container-strip {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -533,7 +533,7 @@ section { padding: 88px 0; }
 @media (max-width: 560px) { .footer-grid { grid-template-columns: 1fr; } }
 
 .footer-brand { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
-.footer-brand .logo-mark { width: 40px; height: 40px; color: var(--gold); }
+.footer-brand .logo-mark { width: 40px; height: auto; }
 .footer-brand span { font-family: var(--font-heading); color: var(--oat); text-transform: uppercase; letter-spacing: 0.05em; }
 
 .site-footer h4 {

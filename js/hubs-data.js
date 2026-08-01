@@ -2,7 +2,9 @@
  * SAMPLE HUB NETWORK DATA
  * ------------------------------------------------------------------
  * These are placeholder hubs used to demonstrate the "Find Your Local
- * Hub" locator (see hubs.html / index.html). None of the farm names,
+ * Hub" locator (see hubs.html / index.html). Each hub is a farm rearing
+ * whole pasture-raised chickens, sold via farm-gate collection and/or
+ * through local butchers and farm shops. None of the farm names,
  * addresses or contact details below are real — replace every entry
  * in this file with your actual live and upcoming hub locations
  * before this site goes live.
