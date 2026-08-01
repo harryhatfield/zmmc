@@ -254,13 +254,6 @@ section { padding: 88px 0; }
   overflow: hidden;
 }
 .hero-art .logo-mark { width: 46%; height: auto; opacity: 0.95; }
-.hero-art .container-strip {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 30%;
-  background: repeating-linear-gradient(90deg, #1c2620 0 10px, #223028 10px 20px);
-  border-top: 3px solid var(--gold);
-}
 
 @media (max-width: 860px) {
   .hero-grid { grid-template-columns: 1fr; }
