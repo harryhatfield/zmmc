@@ -247,6 +247,35 @@
       </form>
     </div>
   </div>
+
+  <!--
+    Background sign-up into Zoho Campaigns. On submit, main.js copies the
+    enquirer's name/email into this hidden form and posts it to Zoho at the
+    same time as the visible form goes to Formspree. It targets a hidden
+    iframe so it submits without navigating away or needing a visible
+    response. Requires CAPTCHA to be disabled on this Zoho signup form
+    (Zoho Campaigns → this form's settings → Require CAPTCHA), since a
+    background submission has no user present to solve a challenge.
+  -->
+  <iframe name="zcOptinFrame" data-zoho-frame style="display:none" title="Zoho Campaigns signup (background)"></iframe>
+  <form data-zoho-form action="https://zcm1-zcmp.maillist-manage.eu/weboptin.zc" method="POST" target="zcOptinFrame" style="display:none">
+    <input type="email" name="CONTACT_EMAIL" data-zoho-email>
+    <input type="text" name="FIRSTNAME" data-zoho-firstname>
+    <input type="text" name="LASTNAME" data-zoho-lastname>
+    <input type="hidden" name="zc_trackCode" value="ZCFORMVIEW">
+    <input type="hidden" name="viewFrom" value="URL_ACTION">
+    <input type="hidden" name="submitType" value="optinCustomView">
+    <input type="hidden" name="lD" value="137ef4fdc81c374c">
+    <input type="hidden" name="emailReportId" value="">
+    <input type="hidden" name="zx" value="14ae643ceb">
+    <input type="hidden" name="zcvers" value="2.0">
+    <input type="hidden" name="oldListIds" value="">
+    <input type="hidden" name="mode" value="OptinCreateView">
+    <input type="hidden" name="zcld" value="137ef4fdc81c374c">
+    <input type="hidden" name="zctd" value="137ef4fdc814b159">
+    <input type="hidden" name="zc_formIx" value="3zadcf20b92274a94077071e01ff2d36a0f2eb91a5bfc7586e83f2bbbe4171d872">
+    <input type="hidden" name="scriptless" value="yes">
+  </form>
 </section>
 
 <footer class="site-footer">
