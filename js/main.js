@@ -54,24 +54,26 @@ function initHubLocator() {
       hub.status === "open"
         ? "Farm-gate collection, or via local butchers &amp; farm shops"
         : "Opening soon";
+    const location = hub.postcode ? `${hub.town}, ${hub.postcode}` : hub.town;
+    const contact = [hub.phone, hub.email].filter(Boolean).join("<br>");
+
     return `
       <article class="hub-card">
         <span class="region-tag">${regionLabel(hub.region)} · ${statusLabel}</span>
         <h3>${hub.name}</h3>
-        <p class="farm-partner">Reared by ${hub.farmPartner}</p>
+        ${hub.estate ? `<p class="farm-partner">${hub.estate}</p>` : ""}
         <dl>
           <dt>Location</dt>
-          <dd>${hub.town}, ${hub.postcode}</dd>
+          <dd>${location}</dd>
           <dt>Buy</dt>
           <dd>${buyVia}</dd>
           <dt>Farm-Gate Hours</dt>
           <dd>${hub.hours}</dd>
-          <dt>Contact</dt>
-          <dd>${hub.phone}<br>${hub.email}</dd>
+          ${contact ? `<dt>Contact</dt><dd>${contact}</dd>` : ""}
         </dl>
         <div class="hub-actions">
           <a class="btn btn-outline-dark" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hub.mapsQuery)}" target="_blank" rel="noopener">Get Directions</a>
-          <a class="btn btn-outline-dark" href="mailto:${hub.email}">Email Hub</a>
+          ${hub.email ? `<a class="btn btn-outline-dark" href="mailto:${hub.email}">Email Hub</a>` : ""}
         </div>
       </article>
     `;
