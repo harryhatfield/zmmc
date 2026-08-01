@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find Your Local Hub | The Zero Miles Meat Company</title>
+<meta name="description" content="Search our network of Zero Miles container hubs to find the farm-fresh meat hub nearest you.">
+<meta name="theme-color" content="#131A17">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand">
+      <svg class="logo-mark" viewBox="0 0 500 500" aria-hidden="true">
+        <circle cx="250" cy="250" r="228" fill="none" stroke="currentColor" stroke-width="9"/>
+        <path id="arcTop-hdr" fill="none" d="M 108 178 A 210 210 0 0 1 392 178" />
+        <path id="arcBottom-hdr" fill="none" d="M 130 355 A 210 210 0 0 0 370 355" />
+        <text font-family="'Oswald', sans-serif" font-size="34" font-weight="600" letter-spacing="4" fill="currentColor">
+          <textPath href="#arcTop-hdr" startOffset="50%" text-anchor="middle">THE ZERO MILES</textPath>
+        </text>
+        <text font-family="'Oswald', sans-serif" font-size="34" font-weight="600" letter-spacing="4" fill="currentColor">
+          <textPath href="#arcBottom-hdr" startOffset="50%" text-anchor="middle">MEAT COMPANY</textPath>
+        </text>
+        <g fill="currentColor"><path d="M250 150c-40 0-72 32-72 71 0 53 72 124 72 124s72-71 72-124c0-39-32-71-72-71z"/></g>
+        <g stroke="#131A17" stroke-width="8" stroke-linecap="round">
+          <line x1="234" y1="185" x2="234" y2="230"/><line x1="250" y1="185" x2="250" y2="230"/><line x1="266" y1="185" x2="266" y2="230"/>
+          <path d="M234 230c0 14 8 20 16 20s16-6 16-20" fill="none"/><line x1="250" y1="250" x2="250" y2="305"/>
+        </g>
+        <path d="M170 380c30-18 130-18 160 0" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">The<strong>Zero Miles</strong>Meat Co.</span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="index.html#what-we-do">What We Do</a></li>
+        <li><a href="hubs.html" class="active">Find a Hub</a></li>
+        <li><a href="franchise.html">Franchise With Us</a></li>
+        <li><a href="franchise.html#enquire">Contact</a></li>
+      </ul>
+      <a href="franchise.html#enquire" class="btn btn-gold">Become a Franchisee</a>
+    </nav>
+
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="hero" style="padding-bottom:70px;">
+  <div class="container" style="max-width:760px;">
+    <span class="eyebrow">Find Your Local Hub</span>
+    <h1>Farm-fresh meat, wherever you are.</h1>
+    <p class="lede">Search our network of Zero Miles container hubs by town, postcode or region — each one paired with a named local farm partner.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="hub-search">
+      <label class="visually-hidden" for="hubSearch">Search by town or postcode</label>
+      <input type="search" id="hubSearch" data-hub-search placeholder="Search by town or postcode…">
+      <label class="visually-hidden" for="hubRegion">Filter by region</label>
+      <select id="hubRegion" data-hub-region>
+        <option value="">All regions</option>
+      </select>
+    </div>
+
+    <p class="hub-count" data-hub-count></p>
+
+    <div class="hub-grid" data-hub-grid></div>
+
+    <div class="empty-state" data-hub-empty style="display:none;">
+      <h3>No hubs found</h3>
+      <p>We couldn't find a hub matching your search. We're expanding the network all the time — check back soon, or help us grow into your area.</p>
+      <a href="franchise.html" class="btn btn-outline-dark" style="margin-top:16px;">Bring a Hub to Your Area</a>
+    </div>
+
+    <div class="hub-note">
+      <strong>Don't see a hub near you yet?</strong> We're actively recruiting franchise partners to open new Zero Miles hubs across the country. <a href="franchise.html#enquire" style="text-decoration:underline; color:var(--earth);">Register your interest in opening one</a> or email <a href="mailto:info@thezeromilesmeatcompany.co.uk" style="text-decoration:underline; color:var(--earth);">info@thezeromilesmeatcompany.co.uk</a>.
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="container">
+    <h2>Know an area that needs a Zero Miles hub?</h2>
+    <div class="btn-row">
+      <a href="franchise.html" class="btn btn-gold">Explore Franchising</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg class="logo-mark" viewBox="0 0 500 500" aria-hidden="true">
+            <circle cx="250" cy="250" r="228" fill="none" stroke="currentColor" stroke-width="9"/>
+            <path id="arcTop-ftr" fill="none" d="M 108 178 A 210 210 0 0 1 392 178" />
+            <path id="arcBottom-ftr" fill="none" d="M 130 355 A 210 210 0 0 0 370 355" />
+            <text font-family="'Oswald', sans-serif" font-size="34" font-weight="600" letter-spacing="4" fill="currentColor">
+              <textPath href="#arcTop-ftr" startOffset="50%" text-anchor="middle">THE ZERO MILES</textPath>
+            </text>
+            <text font-family="'Oswald', sans-serif" font-size="34" font-weight="600" letter-spacing="4" fill="currentColor">
+              <textPath href="#arcBottom-ftr" startOffset="50%" text-anchor="middle">MEAT COMPANY</textPath>
+            </text>
+            <g fill="currentColor"><path d="M250 150c-40 0-72 32-72 71 0 53 72 124 72 124s72-71 72-124c0-39-32-71-72-71z"/></g>
+            <g stroke="#2A2F2B" stroke-width="8" stroke-linecap="round">
+              <line x1="234" y1="185" x2="234" y2="230"/><line x1="250" y1="185" x2="250" y2="230"/><line x1="266" y1="185" x2="266" y2="230"/>
+              <path d="M234 230c0 14 8 20 16 20s16-6 16-20" fill="none"/><line x1="250" y1="250" x2="250" y2="305"/>
+            </g>
+            <path d="M170 380c30-18 130-18 160 0" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+          <span>The Zero Miles<br>Meat Company</span>
+        </div>
+        <p>Farm-direct meat, zero food miles, and a franchise network built on trust in the land.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html#what-we-do">What We Do</a></li>
+          <li><a href="hubs.html">Find a Hub</a></li>
+          <li><a href="franchise.html">Franchise With Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Franchise</h4>
+        <ul>
+          <li><a href="franchise.html#model">The Hub Model</a></li>
+          <li><a href="franchise.html#process">Our Process</a></li>
+          <li><a href="franchise.html#faq">FAQs</a></li>
+          <li><a href="franchise.html#enquire">Enquire Now</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@thezeromilesmeatcompany.co.uk">info@thezeromilesmeatcompany.co.uk</a></li>
+          <li>United Kingdom</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> The Zero Miles Meat Company. All rights reserved.</span>
+      <span>Farm to door, zero miles.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/hubs-data.js"></script>
+<script src="js/main.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

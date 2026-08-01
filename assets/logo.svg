@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-labelledby="zmmcLogoTitle">
+  <title id="zmmcLogoTitle">The Zero Miles Meat Company</title>
+  <circle cx="250" cy="250" r="228" fill="none" stroke="currentColor" stroke-width="9"/>
+
+  <path id="zmmcArcTop" fill="none" d="M 108 178 A 210 210 0 0 1 392 178" />
+  <path id="zmmcArcBottom" fill="none" d="M 130 355 A 210 210 0 0 0 370 355" />
+
+  <text font-family="'Oswald', 'Arial Narrow', sans-serif" font-size="34" font-weight="600" letter-spacing="4" fill="currentColor">
+    <textPath href="#zmmcArcTop" startOffset="50%" text-anchor="middle">THE ZERO MILES</textPath>
+  </text>
+  <text font-family="'Oswald', 'Arial Narrow', sans-serif" font-size="34" font-weight="600" letter-spacing="4" fill="currentColor">
+    <textPath href="#zmmcArcBottom" startOffset="50%" text-anchor="middle">MEAT COMPANY</textPath>
+  </text>
+
+  <circle cx="108" cy="178" r="4.5" fill="currentColor"/>
+  <circle cx="392" cy="178" r="4.5" fill="currentColor"/>
+  <circle cx="130" cy="355" r="4.5" fill="currentColor"/>
+  <circle cx="370" cy="355" r="4.5" fill="currentColor"/>
+
+  <g fill="currentColor">
+    <path d="M250 155c-38 0-68 30-68 67 0 50 68 118 68 118s68-68 68-118c0-37-30-67-68-67z" opacity="0"/>
+    <path d="M250 150c-40 0-72 32-72 71 0 53 72 124 72 124s72-71 72-124c0-39-32-71-72-71z"/>
+  </g>
+  <g stroke="#131A17" stroke-width="8" stroke-linecap="round">
+    <line x1="234" y1="185" x2="234" y2="230"/>
+    <line x1="250" y1="185" x2="250" y2="230"/>
+    <line x1="266" y1="185" x2="266" y2="230"/>
+    <path d="M234 230c0 14 8 20 16 20s16-6 16-20" fill="none"/>
+    <line x1="250" y1="250" x2="250" y2="305"/>
+  </g>
+
+  <path d="M170 380c30-18 130-18 160 0" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+</svg>
