@@ -61,9 +61,10 @@ function initHubLocator() {
   function hubCard(hub) {
     const statusLabel = hub.status === "open" ? "Open now" : "Opening soon";
     const buyVia =
-      hub.status === "open"
+      hub.buy ||
+      (hub.status === "open"
         ? "Farm-gate collection, or via local butchers &amp; farm shops"
-        : "Opening soon";
+        : "Opening soon");
     const location = hub.postcode ? `${hub.town}, ${hub.postcode}` : hub.town;
     const websiteLabel = hub.website ? hub.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
     const contact = [
@@ -109,7 +110,8 @@ function initHubLocator() {
         hub.name.toLowerCase().includes(query) ||
         (hub.estate || "").toLowerCase().includes(query);
       const matchesRegion = !region || hub.region === region;
-      const matchesSpecies = !species || hub.species === species;
+      const hubSpecies = Array.isArray(hub.species) ? hub.species : [hub.species];
+      const matchesSpecies = !species || hubSpecies.includes(species);
       return matchesQuery && matchesRegion && matchesSpecies;
     });
 
