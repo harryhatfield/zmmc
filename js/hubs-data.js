@@ -12,9 +12,12 @@
  *   town     town/city, shown and searched against
  *   postcode postcode (or outward code), shown and searched against — omit if not yet set
  *   region   one of the REGIONS values below, used for filtering
- *   species  one of the SPECIES values below, used for the "meat" filter
+ *   species  one, or an array of, SPECIES values below, used for the "meat" filter
  *   status   "open" | "opening-soon"
- *   hours    farm-gate collection hours, display string
+ *   hours    farm-gate / collection hours, display string
+ *   buy      custom "Buy" line — omit to use the default ("Farm-gate
+ *            collection, or via local butchers & farm shops" when open,
+ *            "Opening soon" otherwise)
  *   phone    display string — omit if not yet set
  *   email    display string — omit if not yet set
  *   website  full URL (e.g. "https://example.co.uk") — omit if not yet set
@@ -51,15 +54,19 @@ const HUBS = [
     mapsQuery: "Wokingham RG40 3AP",
   },
   {
-    id: "hub-surrey-broilers",
-    name: "Surrey Broilers",
-    estate: "Hampton Estate",
+    id: "hub-hampton-estate-farms",
+    name: "Hampton Estate Farms",
+    estate: "Hampton Estate — a traditional agricultural estate in the Surrey Hills",
     town: "Hampton Estate",
-    postcode: "",
+    postcode: "GU10 1JF",
     region: "south-east",
-    species: "chicken",
-    status: "opening-soon",
-    hours: "Opening soon",
-    mapsQuery: "Hampton Estate, Surrey",
+    species: ["beef", "game"],
+    status: "open",
+    buy: "Meat collection days every 6 weeks",
+    hours: "10.30am–3.30pm on collection days",
+    phone: "07976 315701",
+    email: "jameswindridge@hamptonestate.co.uk",
+    product: "Pasture-Fed Beef, Wild Roe Venison",
+    mapsQuery: "Hampton Estate, GU10 1JF",
   },
 ];
