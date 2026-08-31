@@ -66,6 +66,7 @@ const HUBS = [
     hours: "10.30am–3.30pm on collection days",
     phone: "07976 315701",
     email: "jameswindridge@hamptonestate.co.uk",
+    website: "https://www.hamptonestate.co.uk/",
     product: "Pasture-Fed Beef, Wild Roe Venison",
     mapsQuery: "Hampton Estate, GU10 1JF",
   },
