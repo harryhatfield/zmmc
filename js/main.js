@@ -30,6 +30,7 @@ function initHubLocator() {
 
   const searchInput = document.querySelector("[data-hub-search]");
   const regionSelect = document.querySelector("[data-hub-region]");
+  const speciesSelect = document.querySelector("[data-hub-species]");
   const countEl = document.querySelector("[data-hub-count]");
   const emptyState = document.querySelector("[data-hub-empty]");
   const limit = Number(grid.dataset.hubGrid) || Infinity;
@@ -40,6 +41,15 @@ function initHubLocator() {
       opt.value = region.value;
       opt.textContent = region.label;
       regionSelect.appendChild(opt);
+    });
+  }
+
+  if (speciesSelect) {
+    SPECIES.forEach((species) => {
+      const opt = document.createElement("option");
+      opt.value = species.value;
+      opt.textContent = species.label;
+      speciesSelect.appendChild(opt);
     });
   }
 
@@ -55,7 +65,12 @@ function initHubLocator() {
         ? "Farm-gate collection, or via local butchers &amp; farm shops"
         : "Opening soon";
     const location = hub.postcode ? `${hub.town}, ${hub.postcode}` : hub.town;
-    const contact = [hub.phone, hub.email].filter(Boolean).join("<br>");
+    const websiteLabel = hub.website ? hub.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : "";
+    const contact = [
+      hub.phone,
+      hub.email,
+      hub.website ? `<a href="${hub.website}" target="_blank" rel="noopener">${websiteLabel}</a>` : "",
+    ].filter(Boolean).join("<br>");
 
     return `
       <article class="hub-card">
@@ -65,6 +80,7 @@ function initHubLocator() {
         <dl>
           <dt>Location</dt>
           <dd>${location}</dd>
+          ${hub.product ? `<dt>Sells</dt><dd>${hub.product}</dd>` : ""}
           <dt>Buy</dt>
           <dd>${buyVia}</dd>
           <dt>Farm-Gate Hours</dt>
@@ -74,6 +90,7 @@ function initHubLocator() {
         <div class="hub-actions">
           <a class="btn btn-outline-dark" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hub.mapsQuery)}" target="_blank" rel="noopener">Get Directions</a>
           ${hub.email ? `<a class="btn btn-outline-dark" href="mailto:${hub.email}">Email Hub</a>` : ""}
+          ${hub.website ? `<a class="btn btn-outline-dark" href="${hub.website}" target="_blank" rel="noopener">Visit Website</a>` : ""}
         </div>
       </article>
     `;
@@ -82,16 +99,18 @@ function initHubLocator() {
   function render() {
     const query = (searchInput?.value || "").trim().toLowerCase();
     const region = regionSelect?.value || "";
+    const species = speciesSelect?.value || "";
 
     const filtered = HUBS.filter((hub) => {
       const matchesQuery =
         !query ||
         hub.town.toLowerCase().includes(query) ||
-        hub.postcode.toLowerCase().includes(query) ||
+        (hub.postcode || "").toLowerCase().includes(query) ||
         hub.name.toLowerCase().includes(query) ||
-        hub.farmPartner.toLowerCase().includes(query);
+        (hub.estate || "").toLowerCase().includes(query);
       const matchesRegion = !region || hub.region === region;
-      return matchesQuery && matchesRegion;
+      const matchesSpecies = !species || hub.species === species;
+      return matchesQuery && matchesRegion && matchesSpecies;
     });
 
     const toShow = filtered.slice(0, limit);
@@ -111,6 +130,7 @@ function initHubLocator() {
 
   searchInput?.addEventListener("input", render);
   regionSelect?.addEventListener("change", render);
+  speciesSelect?.addEventListener("change", render);
 
   render();
 }
