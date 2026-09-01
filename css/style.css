@@ -151,6 +151,7 @@ section { padding: 88px 0; }
   color: var(--oat);
 }
 .brand-name strong { color: var(--gold); display: block; font-size: 1.15rem; letter-spacing: 0.08em; }
+.brand-name sup { font-size: 0.6em; color: var(--gold); letter-spacing: normal; }
 
 .main-nav { display: flex; align-items: center; gap: 36px; }
 
