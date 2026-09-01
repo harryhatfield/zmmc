@@ -528,6 +528,7 @@ section { padding: 88px 0; }
 .footer-brand { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
 .footer-brand .logo-mark { width: 40px; height: auto; }
 .footer-brand span { font-family: var(--font-heading); color: var(--oat); text-transform: uppercase; letter-spacing: 0.05em; }
+.footer-brand sup { font-size: 0.6em; color: var(--gold); letter-spacing: normal; }
 
 .site-footer h4 {
   color: var(--oat);
