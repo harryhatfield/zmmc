@@ -31,6 +31,7 @@ const REGIONS = [
 
 const SPECIES = [
   { value: "chicken", label: "Chicken" },
+  { value: "turkey", label: "Turkey" },
   { value: "beef", label: "Beef" },
   { value: "pork", label: "Pork" },
   { value: "lamb", label: "Lamb" },
