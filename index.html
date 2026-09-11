@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 
@@ -51,10 +51,13 @@
       </div>
     </div>
     <div class="hero-art">
-      <div class="logo-mark-wrap">
-        <img class="logo-mark" src="assets/zmmc_logo_gold.png" alt="The Zero Miles Meat Company">
-        <span class="tm-badge" aria-hidden="true">&reg;</span>
-      </div>
+      <video class="hero-video" autoplay muted loop playsinline poster="assets/hero-intro-poster.jpg" aria-label="The Zero Miles Meat Company — chicken that never leaves the farm to be processed">
+        <source src="assets/hero-intro.mp4" type="video/mp4">
+      </video>
+      <button type="button" class="hero-video-sound" data-hero-video-toggle aria-label="Turn sound on">
+        <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -232,8 +235,8 @@
   </div>
 </footer>
 
-<script src="js/hubs-data.js?v=6"></script>
-<script src="js/main.js?v=6"></script>
+<script src="js/hubs-data.js?v=7"></script>
+<script src="js/main.js?v=7"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

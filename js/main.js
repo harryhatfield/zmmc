@@ -2,7 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initHubLocator();
   initFranchiseForm();
+  initHeroVideoSound();
 });
+
+/* ---- Hero video sound toggle ---- */
+function initHeroVideoSound() {
+  const toggle = document.querySelector("[data-hero-video-toggle]");
+  const video = document.querySelector(".hero-video");
+  if (!toggle || !video) return;
+
+  toggle.addEventListener("click", () => {
+    video.muted = !video.muted;
+    toggle.toggleAttribute("data-unmuted", !video.muted);
+    toggle.setAttribute("aria-label", video.muted ? "Turn sound on" : "Turn sound off");
+  });
+}
 
 /* ---- Mobile nav toggle ---- */
 function initNav() {
