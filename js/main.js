@@ -3,7 +3,74 @@ document.addEventListener("DOMContentLoaded", () => {
   initHubLocator();
   initFranchiseForm();
   initHeroVideoSound();
+  initCookieConsent();
 });
+
+/* ---- Cookie consent (gates the Google Ads tag) ---- */
+const COOKIE_CONSENT_KEY = "zmmc_cookie_consent";
+const GOOGLE_ADS_ID = "AW-18442684641";
+
+function loadGoogleAdsTag() {
+  if (window.zmmcGoogleTagLoaded) return;
+  window.zmmcGoogleTagLoaded = true;
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () {
+    window.dataLayer.push(arguments);
+  };
+  window.gtag("js", new Date());
+  window.gtag("config", GOOGLE_ADS_ID);
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`;
+  document.head.appendChild(script);
+}
+
+function initCookieConsent() {
+  const settingsLink = document.querySelector("[data-cookie-settings]");
+  settingsLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showCookieBanner();
+  });
+
+  const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+  if (consent === "accepted") {
+    loadGoogleAdsTag();
+    return;
+  }
+  if (consent === "rejected") return;
+
+  showCookieBanner();
+}
+
+function showCookieBanner() {
+  if (document.querySelector("[data-cookie-banner]")) return;
+
+  const banner = document.createElement("div");
+  banner.className = "cookie-banner";
+  banner.setAttribute("data-cookie-banner", "");
+  banner.innerHTML = `
+    <div class="cookie-banner-inner">
+      <p>We use cookies for advertising conversion tracking (Google Ads). Essential site functionality works either way — see our <a href="privacy.html">Privacy Policy</a> for details.</p>
+      <div class="cookie-banner-actions">
+        <button type="button" class="btn btn-outline" data-cookie-reject>Reject</button>
+        <button type="button" class="btn btn-gold" data-cookie-accept>Accept</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  banner.querySelector("[data-cookie-accept]").addEventListener("click", () => {
+    localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
+    loadGoogleAdsTag();
+    banner.remove();
+  });
+  banner.querySelector("[data-cookie-reject]").addEventListener("click", () => {
+    localStorage.setItem(COOKIE_CONSENT_KEY, "rejected");
+    banner.remove();
+  });
+}
 
 /* ---- Hero video sound toggle ---- */
 function initHeroVideoSound() {
