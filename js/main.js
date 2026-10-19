@@ -6,10 +6,25 @@ document.addEventListener("DOMContentLoaded", () => {
   initCookieConsent();
 });
 
-/* ---- Cookie consent (gates the Google Ads tag and the Republic widget) ---- */
+/* ---- Cookie consent (gates Google Ads, Google Tag Manager and the Republic widget) ---- */
 const COOKIE_CONSENT_KEY = "zmmc_cookie_consent";
 const GOOGLE_ADS_ID = "AW-18442684641";
+const GTM_CONTAINER_ID = "GTM-WZZZSQ2J";
 const REPUBLIC_WIDGET_SRC = "https://assets.seedrs.com/campaign-scripts/the-zero-miles-meat-company-v1.js";
+
+function loadGTM() {
+  if (window.zmmcGtmLoaded) return;
+  window.zmmcGtmLoaded = true;
+
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}`;
+  const firstScript = document.getElementsByTagName("script")[0];
+  firstScript.parentNode.insertBefore(script, firstScript);
+}
 
 function loadGoogleAdsTag() {
   if (window.zmmcGoogleTagLoaded) return;
@@ -40,6 +55,7 @@ function loadRepublicWidget() {
 }
 
 function loadConsentedScripts() {
+  loadGTM();
   loadGoogleAdsTag();
   loadRepublicWidget();
 }
@@ -69,7 +85,7 @@ function showCookieBanner() {
   banner.setAttribute("data-cookie-banner", "");
   banner.innerHTML = `
     <div class="cookie-banner-inner">
-      <p>We use cookies for advertising conversion tracking (Google Ads) and, on our home page, our Republic investment widget. Essential site functionality works either way — see our <a href="privacy.html">Privacy Policy</a> for details.</p>
+      <p>We use cookies for advertising and analytics (Google Ads and Google Tag Manager) and, on our home page, our Republic investment widget. Essential site functionality works either way — see our <a href="privacy.html">Privacy Policy</a> for details.</p>
       <div class="cookie-banner-actions">
         <button type="button" class="btn btn-outline" data-cookie-reject>Reject</button>
         <button type="button" class="btn btn-gold" data-cookie-accept>Accept</button>
