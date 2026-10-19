@@ -6,9 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initCookieConsent();
 });
 
-/* ---- Cookie consent (gates the Google Ads tag) ---- */
+/* ---- Cookie consent (gates the Google Ads tag and the Republic widget) ---- */
 const COOKIE_CONSENT_KEY = "zmmc_cookie_consent";
 const GOOGLE_ADS_ID = "AW-18442684641";
+const REPUBLIC_WIDGET_SRC = "https://assets.seedrs.com/campaign-scripts/the-zero-miles-meat-company-v1.js";
 
 function loadGoogleAdsTag() {
   if (window.zmmcGoogleTagLoaded) return;
@@ -27,6 +28,22 @@ function loadGoogleAdsTag() {
   document.head.appendChild(script);
 }
 
+function loadRepublicWidget() {
+  if (window.zmmcRepublicWidgetLoaded) return;
+  if (document.body.dataset.page !== "home") return;
+  window.zmmcRepublicWidgetLoaded = true;
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = REPUBLIC_WIDGET_SRC;
+  document.body.appendChild(script);
+}
+
+function loadConsentedScripts() {
+  loadGoogleAdsTag();
+  loadRepublicWidget();
+}
+
 function initCookieConsent() {
   const settingsLink = document.querySelector("[data-cookie-settings]");
   settingsLink?.addEventListener("click", (e) => {
@@ -36,7 +53,7 @@ function initCookieConsent() {
 
   const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
   if (consent === "accepted") {
-    loadGoogleAdsTag();
+    loadConsentedScripts();
     return;
   }
   if (consent === "rejected") return;
@@ -52,7 +69,7 @@ function showCookieBanner() {
   banner.setAttribute("data-cookie-banner", "");
   banner.innerHTML = `
     <div class="cookie-banner-inner">
-      <p>We use cookies for advertising conversion tracking (Google Ads). Essential site functionality works either way — see our <a href="privacy.html">Privacy Policy</a> for details.</p>
+      <p>We use cookies for advertising conversion tracking (Google Ads) and, on our home page, our Republic investment widget. Essential site functionality works either way — see our <a href="privacy.html">Privacy Policy</a> for details.</p>
       <div class="cookie-banner-actions">
         <button type="button" class="btn btn-outline" data-cookie-reject>Reject</button>
         <button type="button" class="btn btn-gold" data-cookie-accept>Accept</button>
@@ -63,7 +80,7 @@ function showCookieBanner() {
 
   banner.querySelector("[data-cookie-accept]").addEventListener("click", () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
-    loadGoogleAdsTag();
+    loadConsentedScripts();
     banner.remove();
   });
   banner.querySelector("[data-cookie-reject]").addEventListener("click", () => {
