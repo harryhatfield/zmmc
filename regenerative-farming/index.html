@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regenerative Farming &amp; On-Farm Poultry Franchise | The Zero Miles Meat Company</title>
+<meta name="description" content="Regenerative farming with pasture-raised poultry. Add an on-farm poultry hub to your land and diversify your farm with direct-to-consumer chicken sales. Founding franchise territories now open in England.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="https://thezeromilesmeatcompany.co.uk/assets/zmmc_logo_green.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#2A2F2B; --earth:#7A5A3A; --gold:#D6BF86; --gold-light:#e8dcb8;
+    --green:#131A17; --green-light:#1c2620; --moss:#A6AE9A; --oat:#EFE8D6; --sage:#5B655B;
+    --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-heading:'Oswald','Arial Narrow',sans-serif;
+    --radius:6px; --shadow:0 12px 30px -14px rgba(19,26,23,.35); --container:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font-body);background:var(--oat);color:var(--charcoal);line-height:1.6;font-size:17px}
+  img{max-width:100%;display:block}
+  h1,h2,h3,.eyebrow,.btn{font-family:var(--font-heading);text-transform:uppercase;letter-spacing:.02em}
+  h1{font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;font-weight:700}
+  h2{font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.1;font-weight:700;color:var(--green);margin-bottom:.6em}
+  h3{font-size:1.25rem;font-weight:500;color:var(--green);margin-bottom:.35em}
+  p+p{margin-top:.9em}
+  .eyebrow{display:block;font-size:.85rem;font-weight:500;letter-spacing:.14em;color:var(--earth);margin-bottom:.8em}
+  .wrap{max-width:var(--container);margin:0 auto;padding:0 20px}
+  section{padding:80px 0}
+  .dark{background:var(--green);color:var(--oat)}
+  .dark h2,.dark h3{color:var(--oat)}
+  .dark .eyebrow{color:var(--gold)}
+  .lede{font-size:1.15rem;max-width:720px}
+  .btn{display:inline-block;background:var(--gold);color:var(--green);font-weight:500;font-size:1.05rem;padding:15px 28px;border-radius:var(--radius);text-decoration:none;border:0;cursor:pointer;transition:background .2s}
+  .btn:hover,.btn:focus-visible{background:var(--gold-light)}
+  .btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .confirm{background:#fff3b0;color:#5a4500;font-size:.75em;padding:1px 6px;border-radius:3px;font-family:var(--font-body);text-transform:none;letter-spacing:0;font-weight:600}
+
+  /* Header */
+  header{background:var(--green);padding:14px 0;position:sticky;top:0;z-index:20}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  header img{height:44px;width:auto}
+  header .btn{padding:10px 18px;font-size:.95rem}
+
+  /* Hero */
+  .hero{position:relative;color:var(--oat);padding:64px 0 72px;background:var(--green)}
+  .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(19,26,23,.94) 0%,rgba(19,26,23,.8) 55%,rgba(19,26,23,.6) 100%),url('https://thezeromilesmeatcompany.co.uk/assets/lp-chickens-on-pasture.jpg') center/cover no-repeat}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:start}
+  .hero .eyebrow{color:var(--gold)}
+  .hero p.sub{font-size:1.2rem;margin:20px 0 24px;max-width:600px}
+  .ticks{list-style:none;display:grid;gap:10px;margin-bottom:28px}
+  .ticks li{padding-left:30px;position:relative}
+  .ticks li::before{content:"";position:absolute;left:0;top:.45em;width:16px;height:9px;border-left:3px solid var(--gold);border-bottom:3px solid var(--gold);transform:rotate(-45deg)}
+  .territory{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-family:var(--font-heading);text-transform:uppercase;letter-spacing:.1em;font-size:.85rem;padding:6px 12px;border-radius:var(--radius)}
+
+  /* Form card */
+  .form-card{background:var(--oat);color:var(--charcoal);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+  .form-card h2{font-size:1.6rem;margin-bottom:.25em}
+  .form-card p.small{font-size:.92rem;color:var(--sage);margin-bottom:18px}
+  .field{margin-bottom:14px}
+  label{display:block;font-size:.88rem;font-weight:600;margin-bottom:5px;color:var(--green)}
+  label .opt{font-weight:400;color:var(--sage)}
+  input,select,textarea{width:100%;padding:12px 13px;font:inherit;font-size:1rem;border:1px solid var(--moss);border-radius:var(--radius);background:#fff;color:var(--charcoal)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .form-card .btn{width:100%;margin-top:6px}
+  .reassure{font-size:.82rem;color:var(--sage);margin-top:12px;text-align:center}
+  .form-status{margin-top:16px;font-size:.92rem;text-align:center}
+  .form-status[data-state="success"]{color:var(--earth)}
+  .form-status[data-state="error"]{color:#9b3b2a}
+
+  /* Grids */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .card{background:#fff;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+  .dark .card{background:var(--green-light);box-shadow:none;border:1px solid rgba(214,191,134,.25)}
+  .num{font-family:var(--font-heading);font-size:2.6rem;color:var(--gold);line-height:1;margin-bottom:8px;font-weight:700}
+  .photo{border-radius:var(--radius);box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover;width:100%}
+  .photo-tall{aspect-ratio:4/5;max-width:440px;justify-self:center}
+
+  /* Video */
+  .video{position:relative;padding-top:56.25%;border-radius:var(--radius);overflow:hidden;margin-top:28px;box-shadow:var(--shadow)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+  /* Fit / not fit */
+  .fit-list{list-style:none;display:grid;gap:12px;margin-top:20px;max-width:760px}
+  .fit-list li{padding-left:30px;position:relative}
+  .fit-list li::before{content:"✓";position:absolute;left:0;color:var(--earth);font-weight:700}
+
+  /* Steps */
+  .steps{counter-reset:s;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:36px;list-style:none}
+  .steps li{counter-increment:s;border-top:3px solid var(--gold);padding-top:14px}
+  .steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--font-heading);font-size:1.6rem;color:var(--gold);display:block;margin-bottom:4px}
+  .steps p{font-size:.95rem}
+
+  /* FAQ */
+  .faq{max-width:820px;margin-top:28px}
+  .faq details{border-bottom:1px solid var(--moss);padding:18px 0}
+  .faq summary{font-family:var(--font-heading);text-transform:uppercase;font-size:1.15rem;color:var(--green);cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  .dark .faq summary{color:var(--oat)}
+  .dark .faq details{border-bottom-color:rgba(166,174,154,.4)}
+  .faq summary::after{content:"+";color:var(--earth);font-size:1.4rem;line-height:1}
+  .dark .faq summary::after{color:var(--gold)}
+  .faq details[open] summary::after{content:"–"}
+  .faq details p{margin-top:10px}
+
+  /* Final CTA */
+  .cta-band .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+  .cta-band p{margin-bottom:14px}
+  textarea{resize:vertical}
+  .cta-band .form-card{background:#fff}
+  .form-card{scroll-margin-top:90px}
+
+  footer{background:var(--green);color:var(--moss);font-size:.85rem;padding:28px 0 96px;text-align:center}
+  footer a{color:var(--gold)}
+
+  /* Mobile sticky CTA */
+  .sticky-cta{display:none}
+
+  @media (max-width:900px){
+    section{padding:60px 0}
+    .hero .wrap,.grid-2,.cta-band .wrap{grid-template-columns:1fr;gap:32px}
+    .grid-3{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr 1fr}
+    header .btn{display:none}
+    .sticky-cta{display:block;position:fixed;left:0;right:0;bottom:0;padding:12px 16px;background:var(--green);z-index:30;box-shadow:0 -6px 20px rgba(0,0,0,.25);transition:transform .25s}
+    .sticky-cta .btn{width:100%;text-align:center}
+    .sticky-cta.hide{transform:translateY(110%)}
+  }
+  @media (max-width:520px){
+    body{font-size:16px}
+    .wrap{padding:0 16px}
+    .row2,.steps{grid-template-columns:1fr}
+    .form-card{padding:22px 18px}
+  }
+</style>
+</head>
+<body data-page="regenerative-farming-lp">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WZZZSQ2J"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- ===== HEADER (logo only, no navigation; logo is deliberately not a link) ===== -->
+<header>
+  <div class="wrap">
+    <img src="https://thezeromilesmeatcompany.co.uk/assets/zmmc_logo_gold.png" alt="The Zero Miles Meat Company">
+    <a href="#prospectus" class="btn" data-cta="header">Get the prospectus</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== 1. HERO + FORM ===== -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Regenerative farming · Pasture-raised poultry</span>
+      <h1>Make regenerative farming pay with pasture-raised chicken.</h1>
+      <p class="sub">Most regenerative farmers want poultry on their land but have no way to process and sell it. A Zero Miles on-farm poultry hub lets you rear, process and sell pasture-raised chicken without the birds ever leaving your farm.</p>
+      <ul class="ticks">
+        <li>Out on pasture, every day</li>
+        <li>Processed on the farm under the on-farm exemption UK law allows for poultry</li>
+        <li>Sold direct from the farm gate, or through trusted local butchers and farm shops</li>
+        <li>Full training, branding and marketing support</li>
+      </ul>
+      <span class="territory">Founding territories now open in England</span>
+    </div>
+
+    <!-- ===== FORM 1 (hero) ===== -->
+    <div class="form-card" id="prospectus">
+      <h2>Get the franchise prospectus</h2>
+      <p class="small">Tell us a little about yourself and your farm. We'll send you the franchise prospectus and come back to you to arrange a discovery call.</p>
+
+      <form class="zm-form" data-franchise-form action="https://formspree.io/f/mlgqyjdd" method="POST" data-success-redirect="/regenerative-farming/thank-you">
+        <div class="field">
+          <label for="f1-name">Full name</label>
+          <input id="f1-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f1-email">Email</label>
+          <input id="f1-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="f1-phone">Phone <span class="opt">(optional)</span></label>
+          <input id="f1-phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="f1-farm">Type of farm</label>
+            <select id="f1-farm" name="farm_type" required>
+              <option value="">Select…</option>
+              <option>Arable</option>
+              <option>Livestock</option>
+              <option>Mixed</option>
+              <option>Regenerative / holistic</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f1-county">County</label>
+            <select id="f1-county" name="area_of_interest" required>
+              <option value="">Select…</option>
+              <option>Bedfordshire</option><option>Berkshire</option><option>Bristol</option><option>Buckinghamshire</option><option>Cambridgeshire</option><option>Cheshire</option><option>Cornwall</option><option>Cumbria</option><option>Derbyshire</option><option>Devon</option><option>Dorset</option><option>Durham</option><option>East Riding of Yorkshire</option><option>East Sussex</option><option>Essex</option><option>Gloucestershire</option><option>Greater London</option><option>Greater Manchester</option><option>Hampshire</option><option>Herefordshire</option><option>Hertfordshire</option><option>Isle of Wight</option><option>Kent</option><option>Lancashire</option><option>Leicestershire</option><option>Lincolnshire</option><option>Merseyside</option><option>Norfolk</option><option>North Yorkshire</option><option>Northamptonshire</option><option>Northumberland</option><option>Nottinghamshire</option><option>Oxfordshire</option><option>Rutland</option><option>Shropshire</option><option>Somerset</option><option>South Yorkshire</option><option>Staffordshire</option><option>Suffolk</option><option>Surrey</option><option>Tyne and Wear</option><option>Warwickshire</option><option>West Midlands</option><option>West Sussex</option><option>West Yorkshire</option><option>Wiltshire</option><option>Worcestershire</option>
+              <option>Outside England</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f1-msg">Tell us about yourself <span class="opt">(optional)</span></label>
+          <textarea id="f1-msg" name="message" rows="3"></textarea>
+        </div>
+
+        <input type="hidden" name="_subject" value="New franchise enquiry — Regenerative Farming LP">
+        <input type="hidden" name="lead_source" value="Google Ads – Regenerative farming LP">
+        <input type="hidden" name="form_location" value="Hero">
+        <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium">
+        <input type="hidden" name="utm_campaign"><input type="hidden" name="utm_term">
+        <input type="hidden" name="gclid">
+
+        <button type="submit" class="btn">Send me the prospectus</button>
+        <p class="form-status" data-form-status></p>
+        <p class="reassure">No obligation. Your name and email will also be added to our mailing list. See our <a href="https://thezeromilesmeatcompany.co.uk/privacy.html" style="color:var(--earth)">privacy policy</a>.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. THE REGENERATIVE FIT ===== -->
+<section>
+  <div class="wrap">
+    <span class="eyebrow">On-farm poultry for regenerative farms</span>
+    <h2>Pasture-raised poultry that fits a regenerative system.</h2>
+    <p class="lede">Pasture-raised chicken is a natural fit for regenerative and holistic farm management. The hard part has always been processing and selling it without the birds leaving the farm. Our on-farm poultry hubs are built to do exactly that.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>On the pasture</h3>
+        <p>Our poultry hubs keep birds out on pasture, every day, alongside what you already do on your land.</p>
+      </div>
+      <div class="card">
+        <h3>Processed on the farm</h3>
+        <p>Compact container hubs handle rearing and processing on-site. It's the on-farm exemption UK law allows for poultry only, so the animal never leaves the farm.</p>
+      </div>
+      <div class="card">
+        <h3>Sold close to home</h3>
+        <p>Whole pasture-raised chickens are sold direct from the farm gate, or through trusted local butchers and farm shops, instead of into an anonymous supply chain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. FARM DIVERSIFICATION ===== -->
+<section class="dark">
+  <div class="wrap grid-2">
+    <div>
+      <span class="eyebrow">Farm diversification</span>
+      <h2>A small footprint. Real diversification.</h2>
+      <p>You're already farming (arable, livestock or mixed) and want to add a direct-to-consumer income stream without leaving the land or your day job behind. The Zero Miles hub turns a small footprint on your own farm into real diversification.</p>
+      <p>Our converted container hubs cost a fraction of a traditional farm building or retail fit-out, so you can launch faster with lower overheads, without retooling your whole operation.</p>
+      <p style="margin-top:22px"><a href="#prospectus" class="btn" data-cta="diversification">Request the franchise prospectus</a></p>
+    </div>
+    <img class="photo" src="https://thezeromilesmeatcompany.co.uk/assets/lp-chickens-in-pen.jpg" alt="Pasture-raised chickens out on grass in a Zero Miles pen" loading="lazy">
+  </div>
+</section>
+
+<!-- ===== 4. VIDEO ===== -->
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Hear it from us</span>
+    <h2>The Zero Miles story.</h2>
+    <div class="video">
+      <iframe src="https://player.vimeo.com/video/1235045810?dnt=1" title="The Zero Miles Meat Company story" allow="fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. HOW THE HUB WORKS + WHAT'S INCLUDED ===== -->
+<section class="dark">
+  <div class="wrap">
+    <span class="eyebrow">The hub model</span>
+    <h2>One container. One farm. Processed on-site.</h2>
+    <div class="grid-3">
+      <div class="card"><div class="num">01</div><h3>Site your hub</h3><p>We help you choose the right spot on your own land for the container, sized to your space and your stock.</p></div>
+      <div class="card"><div class="num">02</div><h3>Container build-out</h3><p>Your hub is fitted with rearing, packing and refrigeration equipment to our brand specification, ready to trade.</p></div>
+      <div class="card"><div class="num">03</div><h3>Trade as a Zero Miles hub</h3><p>You run the hub day-to-day under the Zero Miles brand, alongside your existing farm business, selling whole pasture-raised chickens direct from the farm gate and to local butchers and farm shops.</p></div>
+    </div>
+
+    <h3 style="margin-top:56px;font-size:1.5rem">What's included</h3>
+    <div class="grid-3" style="margin-top:20px">
+      <div class="card"><h3>Container hub &amp; equipment</h3><p>A fully specified container fit-out, refrigeration and packing equipment to brand standard.</p></div>
+      <div class="card"><h3>Training</h3><p>Hands-on onboarding covering pasture poultry rearing, food safety, hub operations and customer service.</p></div>
+      <div class="card"><h3>Branding &amp; signage</h3><p>Your hub is dressed head-to-toe in the Zero Miles identity, with signage, packaging and uniforms included.</p></div>
+      <div class="card"><h3>Sales support</h3><p>Help finding new outlets and building your direct-to-consumer sales.</p></div>
+      <div class="card"><h3>Marketing support</h3><p>Local launch marketing and ongoing brand campaigns to drive footfall to your hub.</p></div>
+      <div class="card"><h3>Ongoing support</h3><p>A direct line to our team for operational, supply chain and business support after launch.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. IS THIS YOU? ===== -->
+<section>
+  <div class="wrap">
+    <div class="grid-2">
+    <div>
+    <span class="eyebrow">Is this you?</span>
+    <h2>Farmers looking to diversify.</h2>
+    <ul class="fit-list">
+      <li>An existing working farm in England, with space for a container hub</li>
+      <li>Looking to diversify farm income with a low-overhead, direct-to-consumer route to market</li>
+      <li>Hands-on, community-minded, and ready to run a business day-to-day</li>
+      <li>Comfortable following brand standards while building local relationships</li>
+    </ul>
+    </div>
+    <img class="photo photo-tall" src="https://thezeromilesmeatcompany.co.uk/assets/lp-farmer-at-work.jpg" alt="A Zero Miles farmer at work on the farm" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. PROCESS ===== -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow">What happens next</span>
+    <h2>From enquiry to opening day.</h2>
+    <ol class="steps">
+      <li><h3>Discovery call</h3><p>We talk through the model, your target area, and answer your questions.</p></li>
+      <li><h3>Discovery day</h3><p>Meet the team and visit a working hub in person, so you can see the model for yourself before applying.</p></li>
+      <li><h3>Application</h3><p>Submit your formal application, including our full franchise prospectus and investment details.</p></li>
+      <li><h3>Training &amp; launch</h3><p>Complete hands-on training while we confirm your hub site and container build-out, then open as the newest Zero Miles hub.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== 8. FAQ (same as /franchise) ===== -->
+<section class="dark">
+  <div class="wrap">
+    <span class="eyebrow">FAQs</span>
+    <h2>Common questions.</h2>
+    <div class="faq">
+      <details open>
+        <summary>What's the investment required?</summary>
+        <p>Costs vary depending on container specification, site and location. We share full, itemised investment figures in our Franchise Prospectus once we've had an initial discovery call.</p>
+      </details>
+      <details>
+        <summary>Do I need my own farm to apply?</summary>
+        <p>Yes. Our franchise model is built for existing working farms looking to diversify into direct-to-consumer meat sales. You don't need butchery experience, and full training is provided, but you do need land suited to a container hub.</p>
+      </details>
+      <details>
+        <summary>Where does the hub go on my farm?</summary>
+        <p>We work with you to choose the best spot on your own land, factoring in access, utilities and your existing operation, as part of onboarding.</p>
+      </details>
+      <details>
+        <summary>How long does it take to open?</summary>
+        <p>Timelines depend on site readiness and container build-out, and we'll confirm an estimate for your specific territory during the application stage.</p>
+      </details>
+      <details>
+        <summary>Is my territory exclusive?</summary>
+        <p>We plan hub locations carefully to give each franchise partner room to serve their community. We'll confirm territory terms as part of your franchise prospectus.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 9. FINAL CTA + FORM 2 ===== -->
+<section class="cta-band">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Founding territories in England</span>
+      <h2>Bring pasture-raised poultry to your farm.</h2>
+      <p>We're recruiting working farmers to add a Zero Miles container hub to their own land, backed by our brand, training and support.</p>
+      <p>We meet every applicant on a working farm before they apply.</p>
+      <img class="photo" src="https://thezeromilesmeatcompany.co.uk/assets/lp-zero-miles-team.jpg" alt="The Zero Miles Meat Company team on the farm" loading="lazy" style="margin-top:24px">
+      <p style="margin-top:22px;font-size:.92rem">Prefer email? Reach us directly at <a href="mailto:info@thezeromilesmeatcompany.co.uk" style="color:var(--earth)">info@thezeromilesmeatcompany.co.uk</a></p>
+    </div>
+    <div class="form-card" id="prospectus-end">
+      <h2>Get the franchise prospectus</h2>
+      <p class="small">Tell us a little about yourself and your farm. We'll send you the franchise prospectus and come back to you to arrange a discovery call.</p>
+
+      <form class="zm-form" data-franchise-form action="https://formspree.io/f/mlgqyjdd" method="POST" data-success-redirect="/regenerative-farming/thank-you">
+        <div class="field">
+          <label for="f2-name">Full name</label>
+          <input id="f2-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f2-email">Email</label>
+          <input id="f2-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="f2-phone">Phone <span class="opt">(optional)</span></label>
+          <input id="f2-phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="f2-farm">Type of farm</label>
+            <select id="f2-farm" name="farm_type" required>
+              <option value="">Select…</option>
+              <option>Arable</option>
+              <option>Livestock</option>
+              <option>Mixed</option>
+              <option>Regenerative / holistic</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f2-county">County</label>
+            <select id="f2-county" name="area_of_interest" required>
+              <option value="">Select…</option>
+              <option>Bedfordshire</option><option>Berkshire</option><option>Bristol</option><option>Buckinghamshire</option><option>Cambridgeshire</option><option>Cheshire</option><option>Cornwall</option><option>Cumbria</option><option>Derbyshire</option><option>Devon</option><option>Dorset</option><option>Durham</option><option>East Riding of Yorkshire</option><option>East Sussex</option><option>Essex</option><option>Gloucestershire</option><option>Greater London</option><option>Greater Manchester</option><option>Hampshire</option><option>Herefordshire</option><option>Hertfordshire</option><option>Isle of Wight</option><option>Kent</option><option>Lancashire</option><option>Leicestershire</option><option>Lincolnshire</option><option>Merseyside</option><option>Norfolk</option><option>North Yorkshire</option><option>Northamptonshire</option><option>Northumberland</option><option>Nottinghamshire</option><option>Oxfordshire</option><option>Rutland</option><option>Shropshire</option><option>Somerset</option><option>South Yorkshire</option><option>Staffordshire</option><option>Suffolk</option><option>Surrey</option><option>Tyne and Wear</option><option>Warwickshire</option><option>West Midlands</option><option>West Sussex</option><option>West Yorkshire</option><option>Wiltshire</option><option>Worcestershire</option>
+              <option>Outside England</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f2-msg">Tell us about yourself <span class="opt">(optional)</span></label>
+          <textarea id="f2-msg" name="message" rows="3"></textarea>
+        </div>
+
+        <input type="hidden" name="_subject" value="New franchise enquiry — Regenerative Farming LP">
+        <input type="hidden" name="lead_source" value="Google Ads – Regenerative farming LP">
+        <input type="hidden" name="form_location" value="Footer">
+        <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium">
+        <input type="hidden" name="utm_campaign"><input type="hidden" name="utm_term">
+        <input type="hidden" name="gclid">
+
+        <button type="submit" class="btn">Send me the prospectus</button>
+        <p class="form-status" data-form-status></p>
+        <p class="reassure">No obligation. Your name and email will also be added to our mailing list. See our <a href="https://thezeromilesmeatcompany.co.uk/privacy.html" style="color:var(--earth)">privacy policy</a>.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Chicken: reared, processed and sold — without ever leaving the farm.</p>
+  <p style="margin-top:6px">© 2026 The Zero Miles Meat Company. All rights reserved. · <a href="https://thezeromilesmeatcompany.co.uk/privacy.html">Privacy Policy</a></p>
+</footer>
+
+<div class="sticky-cta" id="sticky"><a href="#prospectus" class="btn" data-cta="sticky">Get the prospectus</a></div>
+
+<!--
+  Background sign-up into Zoho Campaigns. On submit, main.js copies the
+  enquirer's name/email into this hidden form and posts it to Zoho at the
+  same time as the visible form goes to Formspree. It targets a hidden
+  iframe so it submits without navigating away or needing a visible
+  response. Requires CAPTCHA to be disabled on this Zoho signup form.
+-->
+<iframe name="zcOptinFrame" data-zoho-frame style="display:none" title="Zoho Campaigns signup (background)"></iframe>
+<form data-zoho-form action="https://zcm1-zcmp.maillist-manage.eu/weboptin.zc" method="POST" target="zcOptinFrame" style="display:none">
+  <input type="email" name="CONTACT_EMAIL" data-zoho-email>
+  <input type="text" name="FIRSTNAME" data-zoho-firstname>
+  <input type="text" name="LASTNAME" data-zoho-lastname>
+  <input type="hidden" name="zc_trackCode" value="ZCFORMVIEW">
+  <input type="hidden" name="viewFrom" value="URL_ACTION">
+  <input type="hidden" name="submitType" value="optinCustomView">
+  <input type="hidden" name="lD" value="137ef4fdc81c374c">
+  <input type="hidden" name="emailReportId" value="">
+  <input type="hidden" name="zx" value="14ae643ceb">
+  <input type="hidden" name="zcvers" value="2.0">
+  <input type="hidden" name="oldListIds" value="">
+  <input type="hidden" name="mode" value="OptinCreateView">
+  <input type="hidden" name="zcld" value="137ef4fdc81c374c">
+  <input type="hidden" name="zctd" value="137ef4fdc814b159">
+  <input type="hidden" name="zc_formIx" value="3zadcf20b92274a94077071e01ff2d36a0f2eb91a5bfc7586e83f2bbbe4171d872">
+  <input type="hidden" name="scriptless" value="yes">
+</form>
+
+<script>
+(function(){
+  /* Hide the mobile sticky button while either form is on screen */
+  var sticky=document.getElementById('sticky'), visible=new Set();
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ en.isIntersecting ? visible.add(en.target) : visible.delete(en.target); });
+      sticky.classList.toggle('hide', visible.size>0);
+    },{threshold:.15});
+    document.querySelectorAll('.form-card').forEach(function(c){ io.observe(c); });
+  }
+})();
+</script>
+<script src="https://thezeromilesmeatcompany.co.uk/js/main.js?v=11"></script>
+</body>
+</html>
