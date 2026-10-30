@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initHubLocator();
   initFranchiseForm();
+  initLeadTracking();
   initHeroVideoSound();
   initCookieConsent();
 });
@@ -263,56 +264,73 @@ function syncToZohoCampaigns(name, email) {
   zohoForm.submit();
 }
 
-/* ---- Franchise enquiry form ---- */
+/* ---- Franchise enquiry form(s) ---- */
 function initFranchiseForm() {
-  const form = document.querySelector("[data-franchise-form]");
-  if (!form) return;
+  document.querySelectorAll("[data-franchise-form]").forEach((form) => {
+    const status = form.querySelector("[data-form-status]");
+    const endpoint = form.getAttribute("action") || "";
+    const isPlaceholder = endpoint.includes("YOUR_FORM_ID");
+    const successRedirect = form.getAttribute("data-success-redirect");
 
-  const status = form.querySelector("[data-form-status]");
-  const endpoint = form.getAttribute("action") || "";
-  const isPlaceholder = endpoint.includes("YOUR_FORM_ID");
-
-  form.addEventListener("submit", async (e) => {
-    if (isPlaceholder) {
-      e.preventDefault();
-      if (status) {
-        status.dataset.state = "error";
-        status.textContent =
-          "Form isn't connected yet — set up a Formspree endpoint (or your preferred form service) and update the form's action attribute. In the meantime, please email info@thezeromilesmeatcompany.co.uk directly.";
-      }
-      return;
-    }
-
-    e.preventDefault();
-    const submitBtn = form.querySelector('button[type="submit"]');
-    submitBtn?.setAttribute("disabled", "true");
-
-    syncToZohoCampaigns(form.elements.name?.value, form.elements.email?.value);
-
-    try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        body: new FormData(form),
-        headers: { Accept: "application/json" },
-      });
-
-      if (response.ok) {
-        form.reset();
+    form.addEventListener("submit", async (e) => {
+      if (isPlaceholder) {
+        e.preventDefault();
         if (status) {
-          status.dataset.state = "success";
-          status.textContent = "Thanks — your enquiry has been sent. We'll be in touch shortly.";
+          status.dataset.state = "error";
+          status.textContent =
+            "Form isn't connected yet — set up a Formspree endpoint (or your preferred form service) and update the form's action attribute. In the meantime, please email info@thezeromilesmeatcompany.co.uk directly.";
         }
-      } else {
-        throw new Error("Submission failed");
+        return;
       }
-    } catch (err) {
-      if (status) {
-        status.dataset.state = "error";
-        status.textContent =
-          "Something went wrong sending your enquiry. Please email info@thezeromilesmeatcompany.co.uk instead.";
+
+      e.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn?.setAttribute("disabled", "true");
+
+      syncToZohoCampaigns(form.elements.name?.value, form.elements.email?.value);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+
+        if (response.ok) {
+          if (successRedirect) {
+            window.location.href = successRedirect;
+            return;
+          }
+          form.reset();
+          if (status) {
+            status.dataset.state = "success";
+            status.textContent = "Thanks — your enquiry has been sent. We'll be in touch shortly.";
+          }
+        } else {
+          throw new Error("Submission failed");
+        }
+      } catch (err) {
+        if (status) {
+          status.dataset.state = "error";
+          status.textContent =
+            "Something went wrong sending your enquiry. Please email info@thezeromilesmeatcompany.co.uk instead.";
+        }
+      } finally {
+        submitBtn?.removeAttribute("disabled");
       }
-    } finally {
-      submitBtn?.removeAttribute("disabled");
-    }
+    });
+  });
+}
+
+/* ---- Lead tracking: fill UTM/gclid hidden fields from the page URL ---- */
+function initLeadTracking() {
+  const params = new URLSearchParams(window.location.search);
+  const fields = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid"];
+
+  document.querySelectorAll("[data-franchise-form]").forEach((form) => {
+    fields.forEach((field) => {
+      const input = form.elements[field];
+      if (input) input.value = params.get(field) || "";
+    });
   });
 }
