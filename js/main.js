@@ -271,6 +271,8 @@ function initFranchiseForm() {
     const endpoint = form.getAttribute("action") || "";
     const isPlaceholder = endpoint.includes("YOUR_FORM_ID");
     const successRedirect = form.getAttribute("data-success-redirect");
+    const successMessage =
+      form.getAttribute("data-success-message") || "Thanks — your enquiry has been sent. We'll be in touch shortly.";
 
     form.addEventListener("submit", async (e) => {
       if (isPlaceholder) {
@@ -288,6 +290,7 @@ function initFranchiseForm() {
       submitBtn?.setAttribute("disabled", "true");
 
       syncToZohoCampaigns(form.elements.name?.value, form.elements.email?.value);
+      if (form.hasAttribute("data-prospectus")) sendProspectusRequest(form);
 
       try {
         const response = await fetch(endpoint, {
@@ -304,7 +307,7 @@ function initFranchiseForm() {
           form.reset();
           if (status) {
             status.dataset.state = "success";
-            status.textContent = "Thanks — your enquiry has been sent. We'll be in touch shortly.";
+            status.textContent = successMessage;
           }
         } else {
           throw new Error("Submission failed");
@@ -320,6 +323,18 @@ function initFranchiseForm() {
       }
     });
   });
+}
+
+/* ---- Franchise prospectus: starts the Resend email sequence and logs the lead ---- */
+const PROSPECTUS_ENDPOINT = "https://zmmc-prospectus.h-hatfield97.workers.dev";
+
+function sendProspectusRequest(form) {
+  // keepalive lets the request finish even if the page redirects to the thank-you page.
+  fetch(PROSPECTUS_ENDPOINT, {
+    method: "POST",
+    body: new URLSearchParams(new FormData(form)),
+    keepalive: true,
+  }).catch(() => {});
 }
 
 /* ---- Lead tracking: fill UTM/gclid hidden fields from the page URL ---- */
