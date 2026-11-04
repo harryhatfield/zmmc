@@ -187,7 +187,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="form-card">
-      <form data-franchise-form action="https://formspree.io/f/mlgqyjdd" method="POST">
+      <form data-franchise-form action="https://zmmc-prospectus.h-hatfield97.workers.dev" method="POST" data-success-message="Thanks — we've emailed you an overview of the Associate Program and we'll be in touch shortly to arrange a call. If you can't see our email within a few minutes, check your spam or promotions folder.">
         <div class="form-row">
           <div class="field">
             <label for="aname">Full name</label>
@@ -219,7 +219,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <label for="amessage">Tell us about your farm</label>
           <textarea id="amessage" name="message" placeholder="How your farm runs today, your grazing and stocking, and your location."></textarea>
         </div>
-        <input type="hidden" name="_subject" value="New Associate Program enquiry — Zero Miles Meat Company">
+        <input type="hidden" name="form_type" value="associate">
+        <input type="hidden" name="lead_source" value="Associate Program">
+        <input type="hidden" name="form_location" value="Associates page">
+        <div aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;"><label>Leave this field empty<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></div>
         <button type="submit" class="btn btn-gold btn-block">Send Enquiry</button>
         <p class="form-status" data-form-status></p>
       </form>
@@ -278,7 +281,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <script src="js/hubs-data.js?v=8"></script>
-<script src="js/main.js?v=14"></script>
+<script src="js/main.js?v=15"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

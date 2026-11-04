@@ -257,36 +257,19 @@ function initFranchiseForm() {
   document.querySelectorAll("[data-franchise-form]").forEach((form) => {
     const status = form.querySelector("[data-form-status]");
     const endpoint = form.getAttribute("action") || "";
-    const isPlaceholder = endpoint.includes("YOUR_FORM_ID");
     const successRedirect = form.getAttribute("data-success-redirect");
     const successMessage =
       form.getAttribute("data-success-message") || "Thanks — your enquiry has been sent. We'll be in touch shortly.";
 
     form.addEventListener("submit", async (e) => {
-      if (isPlaceholder) {
-        e.preventDefault();
-        if (status) {
-          status.dataset.state = "error";
-          status.textContent =
-            "Form isn't connected yet — set up a Formspree endpoint (or your preferred form service) and update the form's action attribute. In the meantime, please email info@thezeromilesmeatcompany.co.uk directly.";
-        }
-        return;
-      }
-
       e.preventDefault();
       const submitBtn = form.querySelector('button[type="submit"]');
       submitBtn?.setAttribute("disabled", "true");
 
       try {
-        // Prospectus forms post to our Cloudflare Worker (email sequence, sheet row and team alert).
+        // Forms post to our Cloudflare Worker (email sequence, sheet row and team alert).
         // A URL-encoded body keeps it a simple cross-origin request with no preflight.
-        // Other forms (e.g. Associates) still post to Formspree.
-        const response = await fetch(
-          endpoint,
-          form.hasAttribute("data-prospectus")
-            ? { method: "POST", body: new URLSearchParams(new FormData(form)) }
-            : { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } }
-        );
+        const response = await fetch(endpoint, { method: "POST", body: new URLSearchParams(new FormData(form)) });
 
         if (response.ok) {
           if (successRedirect) {
