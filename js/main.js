@@ -252,18 +252,6 @@ function initHubLocator() {
   render();
 }
 
-/* ---- Zoho Campaigns background sign-up ---- */
-function syncToZohoCampaigns(name, email) {
-  const zohoForm = document.querySelector("[data-zoho-form]");
-  if (!zohoForm || !email) return;
-
-  const [firstName, ...rest] = (name || "").trim().split(/\s+/);
-  zohoForm.querySelector("[data-zoho-email]").value = email;
-  zohoForm.querySelector("[data-zoho-firstname]").value = firstName || "";
-  zohoForm.querySelector("[data-zoho-lastname]").value = rest.join(" ");
-  zohoForm.submit();
-}
-
 /* ---- Franchise enquiry form(s) ---- */
 function initFranchiseForm() {
   document.querySelectorAll("[data-franchise-form]").forEach((form) => {
@@ -289,7 +277,6 @@ function initFranchiseForm() {
       const submitBtn = form.querySelector('button[type="submit"]');
       submitBtn?.setAttribute("disabled", "true");
 
-      syncToZohoCampaigns(form.elements.name?.value, form.elements.email?.value);
       if (form.hasAttribute("data-prospectus")) sendProspectusRequest(form);
 
       try {
