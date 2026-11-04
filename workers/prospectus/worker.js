@@ -1,4 +1,4 @@
-// Franchise prospectus requests: website form -> Resend automation + Google Sheet row + team alert email.
+// Website enquiries (franchise prospectus and Associate Program): form -> Resend automation + Google Sheet row + team alert email.
 // Secrets (set in Cloudflare, never in this file): RESEND_API_KEY, SHEET_WEBHOOK_URL, SHEET_SECRET.
 // Binding: LEADS (KV namespace) for duplicate and rate-limit checks.
 
@@ -6,8 +6,31 @@ const ALLOWED_ORIGINS = [
   "https://thezeromilesmeatcompany.co.uk",
   "https://www.thezeromilesmeatcompany.co.uk",
 ];
-const EVENT_NAME = "franchise.prospectus_requested";
-const SEGMENT_ID = "98f3a97d-8a6a-4314-84ed-4e8e088b85e6";
+// Each form picks its flow with a hidden form_type field; anything else is a prospectus request.
+const FLOWS = {
+  prospectus: {
+    event: "franchise.prospectus_requested",
+    segmentId: "98f3a97d-8a6a-4314-84ed-4e8e088b85e6",
+    duplicateKey: "lead",
+    defaultSource: "Website form",
+    title: "franchise prospectus request",
+    subjectLabel: "franchise enquiry",
+    nextAction: "Prospectus emails sent – book intro call",
+    startedLine: "Prospectus email sent. Call booking follow-ups go out after 1 day and 5 days.",
+    failedWarning: "The prospectus emails did NOT start. Please send the prospectus manually.",
+  },
+  associate: {
+    event: "associate.enquiry_received",
+    segmentId: null, // Resend plan segment limit reached; the sheet records Associate leads.
+    duplicateKey: "associate",
+    defaultSource: "Associate Program",
+    title: "Associate Program enquiry",
+    subjectLabel: "Associate enquiry",
+    nextAction: "Associate emails sent – book intro call",
+    startedLine: "Associate welcome email sent. Call booking follow-ups go out after 1 day and 5 days.",
+    failedWarning: "The Associate welcome emails did NOT start. Please reply to them manually.",
+  },
+};
 const DUPLICATE_WINDOW_SECONDS = 30 * 24 * 60 * 60;
 const MAX_SUBMISSIONS_PER_IP_PER_HOUR = 10;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -52,27 +75,30 @@ export default {
     if (ipCount >= MAX_SUBMISSIONS_PER_IP_PER_HOUR) return reply(429, { ok: false });
     await env.LEADS.put(ipKey, String(ipCount + 1), { expirationTtl: 3600 });
 
+    const flow = FLOWS[field("form_type")] || FLOWS.prospectus;
     const lead = {
       name,
       email,
       phone: field("phone"),
       location: field("area_of_interest") || field("area"),
       farmType: field("farm_type"),
+      species: field("species"),
       message: field("message"),
-      source: field("lead_source") || "Website form",
+      source: field("lead_source") || flow.defaultSource,
       formLocation: field("form_location"),
       utm: ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid"]
         .map((k) => [k, field(k)])
         .filter(([, v]) => v),
     };
 
-    const repeat = Boolean(await env.LEADS.get(`lead:${email}`));
+    const duplicateKey = `${flow.duplicateKey}:${email}`;
+    const repeat = Boolean(await env.LEADS.get(duplicateKey));
     const results = await Promise.allSettled([
-      repeat ? Promise.resolve("skipped: repeat within 30 days") : startSequence(env, lead),
-      addSheetRow(env, lead, repeat),
+      repeat ? Promise.resolve("skipped: repeat within 30 days") : startSequence(env, flow, lead),
+      addSheetRow(env, flow, lead, repeat),
     ]);
     if (!repeat && results[0].status === "fulfilled") {
-      await env.LEADS.put(`lead:${email}`, new Date().toISOString(), { expirationTtl: DUPLICATE_WINDOW_SECONDS });
+      await env.LEADS.put(duplicateKey, new Date().toISOString(), { expirationTtl: DUPLICATE_WINDOW_SECONDS });
     }
     results.forEach((r) => r.status === "rejected" && console.error(String(r.reason)));
 
@@ -80,7 +106,7 @@ export default {
       sequence: results[0].status === "fulfilled" ? (repeat ? "skipped-repeat" : "started") : "failed",
       sheet: results[1].status === "fulfilled" ? "added" : "failed",
     };
-    const notified = await notifyTeam(env, lead, repeat, status).then(() => "sent", (err) => {
+    const notified = await notifyTeam(env, flow, lead, repeat, status).then(() => "sent", (err) => {
       console.error(String(err));
       return "failed";
     });
@@ -106,34 +132,37 @@ async function resend(env, path, method, body) {
   return res;
 }
 
-async function startSequence(env, lead) {
+async function startSequence(env, flow, lead) {
   const [firstName, ...rest] = lead.name.split(/\s+/);
   const contact = { first_name: firstName, last_name: rest.join(" "), unsubscribed: false };
 
-  const created = await resend(env, "/contacts", "POST", { email: lead.email, ...contact, segments: [{ id: SEGMENT_ID }] });
+  const segments = flow.segmentId ? { segments: [{ id: flow.segmentId }] } : {};
+  const created = await resend(env, "/contacts", "POST", { email: lead.email, ...contact, ...segments });
   if (!created.ok) {
     const updated = await resend(env, `/contacts/${encodeURIComponent(lead.email)}`, "PATCH", contact);
     if (!updated.ok) throw new Error(`Resend contact failed: ${created.status} / ${updated.status} ${await updated.text()}`);
   }
 
   const sent = await resend(env, "/events/send", "POST", {
-    event: EVENT_NAME,
+    event: flow.event,
     email: lead.email,
     payload: {
       form_location: lead.formLocation,
       lead_source: lead.source,
-      farm_type: lead.farmType,
-      area: lead.location,
+      ...(lead.farmType && { farm_type: lead.farmType }),
+      ...(lead.location && { area: lead.location }),
+      ...(lead.species && { species: lead.species }),
     },
   });
   if (!sent.ok) throw new Error(`Resend event failed: ${sent.status} ${await sent.text()}`);
   return "started";
 }
 
-async function addSheetRow(env, lead, repeat) {
+async function addSheetRow(env, flow, lead, repeat) {
   if (!env.SHEET_WEBHOOK_URL) return "sheet not configured";
   const notes = [
     lead.farmType && `Farm type: ${lead.farmType}`,
+    lead.species && `Rears: ${lead.species}`,
     lead.formLocation && `Form: ${lead.formLocation}`,
     ...lead.utm.map(([k, v]) => `${k}: ${v}`),
     repeat && "Repeat request (emails not resent)",
@@ -150,7 +179,7 @@ async function addSheetRow(env, lead, repeat) {
       location: lead.location,
       message: lead.message,
       source: lead.source,
-      nextAction: repeat ? "" : "Prospectus emails sent – book intro call",
+      nextAction: repeat ? "" : flow.nextAction,
       notes,
     }),
   });
@@ -163,9 +192,9 @@ const escapeHtml = (v) =>
   String(v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
 // Alert email to the team for every request, with Reply-To set to the lead.
-async function notifyTeam(env, lead, repeat, status) {
+async function notifyTeam(env, flow, lead, repeat, status) {
   const problems = [
-    status.sequence === "failed" && "The prospectus emails did NOT start. Please send the prospectus manually.",
+    status.sequence === "failed" && flow.failedWarning,
     status.sheet === "failed" && "The lead was NOT added to the Google Sheet. Please add it manually.",
   ].filter(Boolean);
   const rows = [
@@ -174,15 +203,16 @@ async function notifyTeam(env, lead, repeat, status) {
     ["Phone", lead.phone],
     ["Area", lead.location],
     ["Farm type", lead.farmType],
+    ["Rears", lead.species],
     ["Message", lead.message],
     ["Source", lead.source],
     ["Form", lead.formLocation],
     ...lead.utm.map(([k, v]) => [k, v]),
   ].filter(([, v]) => v);
   const emailsLine = repeat
-    ? "Repeat request within 30 days, so the prospectus emails were not sent again."
+    ? "Repeat request within 30 days, so the automatic emails were not sent again."
     : status.sequence === "started"
-      ? "Prospectus email sent. Call booking follow-ups go out after 1 day and 5 days."
+      ? flow.startedLine
       : "";
 
   const gold = "#D6BF86", ink = "#131A17";
@@ -190,7 +220,7 @@ async function notifyTeam(env, lead, repeat, status) {
     `<a href="${escapeHtml(href)}" style="display:inline-block;background:${gold};color:${ink};font:600 14px Arial,sans-serif;text-decoration:none;padding:10px 18px;border-radius:4px;margin:0 8px 8px 0;">${label}</a>`;
   const html = `<!doctype html><html><body style="margin:0;background:#EFE8D6;padding:24px 12px;font-family:Arial,sans-serif;color:${ink};">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:6px;overflow:hidden;">
-<tr><td style="background:${ink};padding:18px 24px;color:${gold};font:700 18px Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;">${repeat ? "Repeat" : "New"} franchise prospectus request</td></tr>
+<tr><td style="background:${ink};padding:18px 24px;color:${gold};font:700 18px Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;">${repeat ? "Repeat" : "New"} ${flow.title}</td></tr>
 ${problems.map((p) => `<tr><td style="background:#F8D7D3;color:#7A1F14;padding:12px 24px;font:600 14px Arial,sans-serif;">⚠ ${escapeHtml(p)}</td></tr>`).join("")}
 <tr><td style="padding:20px 24px 4px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;line-height:1.5;">
@@ -201,7 +231,7 @@ ${emailsLine ? `<tr><td style="padding:8px 24px 0;font-size:13px;color:#5B6660;"
 ${button(`mailto:${lead.email}`, "Reply")}${lead.phone ? button(`tel:${lead.phone.replace(/[^\d+]/g, "")}`, "Call") : ""}${button(SHEET_LINK, "Open sheet")}
 </td></tr></table></body></html>`;
   const text = [
-    `${repeat ? "Repeat" : "New"} franchise prospectus request`,
+    `${repeat ? "Repeat" : "New"} ${flow.title}`,
     ...problems.map((p) => `WARNING: ${p}`),
     "",
     ...rows.map(([k, v]) => `${k}: ${v}`),
@@ -214,7 +244,7 @@ ${button(`mailto:${lead.email}`, "Reply")}${lead.phone ? button(`tel:${lead.phon
     from: NOTIFY_FROM,
     to: [NOTIFY_TO],
     reply_to: lead.email,
-    subject: `${problems.length ? "⚠ " : ""}${repeat ? "Repeat" : "New"} franchise enquiry: ${lead.name}${lead.location ? ` (${lead.location})` : ""}`,
+    subject: `${problems.length ? "⚠ " : ""}${repeat ? "Repeat" : "New"} ${flow.subjectLabel}: ${lead.name}${lead.location ? ` (${lead.location})` : ""}`,
     html,
     text,
   });
