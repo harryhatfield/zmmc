@@ -252,18 +252,6 @@ function initHubLocator() {
   render();
 }
 
-/* ---- Zoho Campaigns background sign-up ---- */
-function syncToZohoCampaigns(name, email) {
-  const zohoForm = document.querySelector("[data-zoho-form]");
-  if (!zohoForm || !email) return;
-
-  const [firstName, ...rest] = (name || "").trim().split(/\s+/);
-  zohoForm.querySelector("[data-zoho-email]").value = email;
-  zohoForm.querySelector("[data-zoho-firstname]").value = firstName || "";
-  zohoForm.querySelector("[data-zoho-lastname]").value = rest.join(" ");
-  zohoForm.submit();
-}
-
 /* ---- Franchise enquiry form(s) ---- */
 function initFranchiseForm() {
   document.querySelectorAll("[data-franchise-form]").forEach((form) => {
@@ -289,15 +277,16 @@ function initFranchiseForm() {
       const submitBtn = form.querySelector('button[type="submit"]');
       submitBtn?.setAttribute("disabled", "true");
 
-      syncToZohoCampaigns(form.elements.name?.value, form.elements.email?.value);
-      if (form.hasAttribute("data-prospectus")) sendProspectusRequest(form);
-
       try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          body: new FormData(form),
-          headers: { Accept: "application/json" },
-        });
+        // Prospectus forms post to our Cloudflare Worker (email sequence, sheet row and team alert).
+        // A URL-encoded body keeps it a simple cross-origin request with no preflight.
+        // Other forms (e.g. Associates) still post to Formspree.
+        const response = await fetch(
+          endpoint,
+          form.hasAttribute("data-prospectus")
+            ? { method: "POST", body: new URLSearchParams(new FormData(form)) }
+            : { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } }
+        );
 
         if (response.ok) {
           if (successRedirect) {
@@ -323,18 +312,6 @@ function initFranchiseForm() {
       }
     });
   });
-}
-
-/* ---- Franchise prospectus: starts the Resend email sequence and logs the lead ---- */
-const PROSPECTUS_ENDPOINT = "https://zmmc-prospectus.h-hatfield97.workers.dev";
-
-function sendProspectusRequest(form) {
-  // keepalive lets the request finish even if the page redirects to the thank-you page.
-  fetch(PROSPECTUS_ENDPOINT, {
-    method: "POST",
-    body: new URLSearchParams(new FormData(form)),
-    keepalive: true,
-  }).catch(() => {});
 }
 
 /* ---- Lead tracking: fill UTM/gclid hidden fields from the page URL ---- */

@@ -255,7 +255,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="form-card">
-      <form data-franchise-form data-prospectus action="https://formspree.io/f/mlgqyjdd" method="POST" data-success-message="Thanks — your franchise prospectus is on its way to your inbox. If you can't see it within a few minutes, check your spam or promotions folder.">
+      <form data-franchise-form data-prospectus action="https://zmmc-prospectus.h-hatfield97.workers.dev" method="POST" data-success-message="Thanks — your franchise prospectus is on its way to your inbox. If you can't see it within a few minutes, check your spam or promotions folder.">
         <div class="form-row">
           <div class="field">
             <label for="fname">Full name</label>
@@ -280,7 +280,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <label for="fmessage">Tell us about yourself</label>
           <textarea id="fmessage" name="message" placeholder="Tell us about your farm, your land, and why you're interested."></textarea>
         </div>
-        <input type="hidden" name="_subject" value="New franchise enquiry — Zero Miles Meat Company">
         <div aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;"><label>Leave this field empty<input type="text" name="company_website" tabindex="-1" autocomplete="off"></label></div>
         <button type="submit" class="btn btn-gold btn-block">Send Enquiry</button>
         <p class="form-status" data-form-status></p>
@@ -289,34 +288,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!--
-    Background sign-up into Zoho Campaigns. On submit, main.js copies the
-    enquirer's name/email into this hidden form and posts it to Zoho at the
-    same time as the visible form goes to Formspree. It targets a hidden
-    iframe so it submits without navigating away or needing a visible
-    response. Requires CAPTCHA to be disabled on this Zoho signup form
-    (Zoho Campaigns → this form's settings → Require CAPTCHA), since a
-    background submission has no user present to solve a challenge.
-  -->
-  <iframe name="zcOptinFrame" data-zoho-frame style="display:none" title="Zoho Campaigns signup (background)"></iframe>
-  <form data-zoho-form action="https://zcm1-zcmp.maillist-manage.eu/weboptin.zc" method="POST" target="zcOptinFrame" style="display:none">
-    <input type="email" name="CONTACT_EMAIL" data-zoho-email>
-    <input type="text" name="FIRSTNAME" data-zoho-firstname>
-    <input type="text" name="LASTNAME" data-zoho-lastname>
-    <input type="hidden" name="zc_trackCode" value="ZCFORMVIEW">
-    <input type="hidden" name="viewFrom" value="URL_ACTION">
-    <input type="hidden" name="submitType" value="optinCustomView">
-    <input type="hidden" name="lD" value="137ef4fdc81c374c">
-    <input type="hidden" name="emailReportId" value="">
-    <input type="hidden" name="zx" value="14ae643ceb">
-    <input type="hidden" name="zcvers" value="2.0">
-    <input type="hidden" name="oldListIds" value="">
-    <input type="hidden" name="mode" value="OptinCreateView">
-    <input type="hidden" name="zcld" value="137ef4fdc81c374c">
-    <input type="hidden" name="zctd" value="137ef4fdc814b159">
-    <input type="hidden" name="zc_formIx" value="3zadcf20b92274a94077071e01ff2d36a0f2eb91a5bfc7586e83f2bbbe4171d872">
-    <input type="hidden" name="scriptless" value="yes">
-  </form>
 </section>
 
 <footer class="site-footer">
@@ -369,7 +340,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <script src="js/hubs-data.js?v=8"></script>
-<script src="js/main.js?v=12"></script>
+<script src="js/main.js?v=14"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
