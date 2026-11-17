@@ -1,5 +1,8 @@
-// Website enquiries (franchise prospectus and Associate Program): form -> Resend automation + Google Sheet row + team alert email.
-// Secrets (set in Cloudflare, never in this file): RESEND_API_KEY, SHEET_WEBHOOK_URL, SHEET_SECRET.
+// Website enquiries (franchise prospectus, Associate Program and food buyer field guide):
+// form -> Resend automation + Google Sheet row + team alert email.
+// Secrets (set in Cloudflare, never in this file): RESEND_API_KEY, SHEET_WEBHOOK_URL, SHEET_SECRET
+// (franchise and Associate sheet) and BUYER_SHEET_WEBHOOK_URL, BUYER_SHEET_SECRET (food buyer sheet).
+// Settings: NOTIFY_TO (where alert emails go) and NOTIFY_FROM (their sender, e.g. "ZMMC Website <address>").
 // Binding: LEADS (KV namespace) for duplicate and rate-limit checks.
 
 const ALLOWED_ORIGINS = [
@@ -7,8 +10,11 @@ const ALLOWED_ORIGINS = [
   "https://www.thezeromilesmeatcompany.co.uk",
 ];
 // Each form picks its flow with a hidden form_type field; anything else is a prospectus request.
+const FRANCHISE_SHEET_LINK = "https://docs.google.com/spreadsheets/d/1TPS0n_XklCvS9LL_A9jXnW_PjstbdfB4W465bQNyRt0/edit";
+const BUYER_SHEET_LINK = "https://docs.google.com/spreadsheets/d/1Yxuaibx3R72M-UBTG1pK__KLIFQeFa94Op435T0S7Xs/edit";
 const FLOWS = {
   prospectus: {
+    sheet: { urlEnv: "SHEET_WEBHOOK_URL", secretEnv: "SHEET_SECRET", link: FRANCHISE_SHEET_LINK },
     event: "franchise.prospectus_requested",
     segmentId: "98f3a97d-8a6a-4314-84ed-4e8e088b85e6",
     duplicateKey: "lead",
@@ -20,6 +26,7 @@ const FLOWS = {
     failedWarning: "The prospectus emails did NOT start. Please send the prospectus manually.",
   },
   associate: {
+    sheet: { urlEnv: "SHEET_WEBHOOK_URL", secretEnv: "SHEET_SECRET", link: FRANCHISE_SHEET_LINK },
     event: "associate.enquiry_received",
     segmentId: null, // Resend plan segment limit reached; the sheet records Associate leads.
     duplicateKey: "associate",
@@ -30,13 +37,22 @@ const FLOWS = {
     startedLine: "Associate welcome email sent. Call booking follow-ups go out after 1 day and 5 days.",
     failedWarning: "The Associate welcome emails did NOT start. Please reply to them manually.",
   },
+  buyer: {
+    sheet: { urlEnv: "BUYER_SHEET_WEBHOOK_URL", secretEnv: "BUYER_SHEET_SECRET", link: BUYER_SHEET_LINK },
+    event: "foodbuyer.guide_requested",
+    segmentId: null, // Resend plan segment limit reached; the sheet records food buyer leads.
+    duplicateKey: "buyer",
+    defaultSource: "Food buyers page",
+    title: "food buyer field guide request",
+    subjectLabel: "food buyer enquiry",
+    nextAction: "Field guide sent – follow up on quantities",
+    startedLine: "Field guide email sent. The call booking follow-up goes out after 5 days.",
+    failedWarning: "The field guide email did NOT send. Please email the guide to them manually.",
+  },
 };
 const DUPLICATE_WINDOW_SECONDS = 30 * 24 * 60 * 60;
 const MAX_SUBMISSIONS_PER_IP_PER_HOUR = 10;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const NOTIFY_TO = "info@thezeromilesmeatcompany.co.uk";
-const NOTIFY_FROM = "ZMMC Website <info@thezeromilesmeatcompany.co.uk>";
-const SHEET_LINK = "https://docs.google.com/spreadsheets/d/1TPS0n_XklCvS9LL_A9jXnW_PjstbdfB4W465bQNyRt0/edit";
 
 export default {
   async fetch(request, env) {
@@ -80,9 +96,14 @@ export default {
       name,
       email,
       phone: field("phone"),
-      location: field("area_of_interest") || field("area"),
+      location: field("area_of_interest") || field("area") || field("location"),
       farmType: field("farm_type"),
       species: field("species"),
+      business: field("business"),
+      businessType: field("business_type"),
+      product: field("product"),
+      quantity: field("quantity"),
+      frequency: field("frequency"),
       message: field("message"),
       source: field("lead_source") || flow.defaultSource,
       formLocation: field("form_location"),
@@ -125,7 +146,7 @@ async function resend(env, path, method, body) {
     headers: {
       Authorization: `Bearer ${env.RESEND_API_KEY}`,
       "Content-Type": "application/json",
-      "User-Agent": "zmmc-prospectus-worker/1.0",
+      "User-Agent": "worker/1.0",
     },
     body: JSON.stringify(body),
   });
@@ -152,6 +173,9 @@ async function startSequence(env, flow, lead) {
       ...(lead.farmType && { farm_type: lead.farmType }),
       ...(lead.location && { area: lead.location }),
       ...(lead.species && { species: lead.species }),
+      ...(lead.business && { business: lead.business }),
+      ...(lead.businessType && { business_type: lead.businessType }),
+      ...(lead.quantity && { quantity: lead.quantity }),
     },
   });
   if (!sent.ok) throw new Error(`Resend event failed: ${sent.status} ${await sent.text()}`);
@@ -159,7 +183,8 @@ async function startSequence(env, flow, lead) {
 }
 
 async function addSheetRow(env, flow, lead, repeat) {
-  if (!env.SHEET_WEBHOOK_URL) return "sheet not configured";
+  const webhook = env[flow.sheet.urlEnv];
+  if (!webhook) throw new Error(`Sheet not configured (${flow.sheet.urlEnv})`);
   const notes = [
     lead.farmType && `Farm type: ${lead.farmType}`,
     lead.species && `Rears: ${lead.species}`,
@@ -168,11 +193,16 @@ async function addSheetRow(env, flow, lead, repeat) {
     repeat && "Repeat request (emails not resent)",
   ].filter(Boolean).join(" · ");
 
-  const res = await fetch(env.SHEET_WEBHOOK_URL, {
+  const res = await fetch(webhook, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      secret: env.SHEET_SECRET,
+      secret: env[flow.sheet.secretEnv],
+      business: lead.business,
+      businessType: lead.businessType,
+      product: lead.product,
+      quantity: lead.quantity,
+      frequency: lead.frequency,
       name: lead.name,
       email: lead.email,
       phone: lead.phone,
@@ -198,10 +228,15 @@ async function notifyTeam(env, flow, lead, repeat, status) {
     status.sheet === "failed" && "The lead was NOT added to the Google Sheet. Please add it manually.",
   ].filter(Boolean);
   const rows = [
+    ["Business", lead.business],
+    ["Business type", lead.businessType],
     ["Name", lead.name],
     ["Email", lead.email],
     ["Phone", lead.phone],
     ["Area", lead.location],
+    ["Looking for", lead.product],
+    ["Weekly quantity", lead.quantity],
+    ["Frequency", lead.frequency],
     ["Farm type", lead.farmType],
     ["Rears", lead.species],
     ["Message", lead.message],
@@ -228,7 +263,7 @@ ${rows.map(([k, v]) => `<tr><td style="padding:6px 12px 6px 0;color:#5B6660;widt
 </table></td></tr>
 ${emailsLine ? `<tr><td style="padding:8px 24px 0;font-size:13px;color:#5B6660;">${escapeHtml(emailsLine)}</td></tr>` : ""}
 <tr><td style="padding:18px 24px 20px;">
-${button(`mailto:${lead.email}`, "Reply")}${lead.phone ? button(`tel:${lead.phone.replace(/[^\d+]/g, "")}`, "Call") : ""}${button(SHEET_LINK, "Open sheet")}
+${button(`mailto:${lead.email}`, "Reply")}${lead.phone ? button(`tel:${lead.phone.replace(/[^\d+]/g, "")}`, "Call") : ""}${button(flow.sheet.link, "Open sheet")}
 </td></tr></table></body></html>`;
   const text = [
     `${repeat ? "Repeat" : "New"} ${flow.title}`,
@@ -237,14 +272,16 @@ ${button(`mailto:${lead.email}`, "Reply")}${lead.phone ? button(`tel:${lead.phon
     ...rows.map(([k, v]) => `${k}: ${v}`),
     "",
     emailsLine,
-    `Sheet: ${SHEET_LINK}`,
+    `Sheet: ${flow.sheet.link}`,
   ].join("\n");
 
+  // Alert recipient and sender come from Worker settings (NOTIFY_TO, NOTIFY_FROM), not from this file.
+  if (!env.NOTIFY_TO || !env.NOTIFY_FROM) throw new Error("NOTIFY_TO / NOTIFY_FROM are not set");
   const res = await resend(env, "/emails", "POST", {
-    from: NOTIFY_FROM,
-    to: [NOTIFY_TO],
+    from: env.NOTIFY_FROM,
+    to: [env.NOTIFY_TO],
     reply_to: lead.email,
-    subject: `${problems.length ? "⚠ " : ""}${repeat ? "Repeat" : "New"} ${flow.subjectLabel}: ${lead.name}${lead.location ? ` (${lead.location})` : ""}`,
+    subject: `${problems.length ? "⚠ " : ""}${repeat ? "Repeat" : "New"} ${flow.subjectLabel}: ${lead.business ? `${lead.business} – ${lead.name}` : lead.name}${lead.location ? ` (${lead.location})` : ""}`,
     html,
     text,
   });
