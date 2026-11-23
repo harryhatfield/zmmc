@@ -897,3 +897,7 @@ section { padding: 88px 0; }
 .guide-form-grid .guide-cover { max-width: 300px; margin: 0 0 26px; transform: none; }
 @media (max-width: 960px) { .guide-form-grid { grid-template-columns: 1fr; gap: 36px; } .guide-form-grid .guide-cover { max-width: 240px; } }
 @media (max-width: 600px) { .form-card { padding: 28px 22px; } }
+
+/* FSB member logo (white version, resized only, per FSB's logo guidelines) */
+.footer-member { display: inline-block; margin-top: 22px; }
+.footer-member img { display: block; width: 150px; height: auto; }
