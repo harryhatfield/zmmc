@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>The Zero Miles Meat Company blog</title>
+    <link>https://thezeromilesmeatcompany.co.uk/blog/</link>
+    <atom:link href="https://thezeromilesmeatcompany.co.uk/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Updates and thoughts from Harry at The Zero Miles Meat Company.</description>
+    <language>en-gb</language>
+    <lastBuildDate>Wed, 25 Nov 2026 11:13:49 +0000</lastBuildDate>
+
+  </channel>
+</rss>
