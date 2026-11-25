@@ -80,7 +80,7 @@ def render_md(text, slug):
     """Block markdown: ## / ### headings, paragraphs, lists, > quotes, ---, and ![alt](img "caption")."""
     lines = text.replace("\r\n", "\n").split("\n")
     out, i = [], 0
-    special = re.compile(r"^(#{1,3}\s|>\s?|[-*]\s+|\d+[.)]\s+|-{3,}\s*$|\*{3,}\s*$|!\[)")
+    special = re.compile(r"^(\||#{1,3}\s|>\s?|[-*]\s+|\d+[.)]\s+|-{3,}\s*$|\*{3,}\s*$|!\[)")
     while i < len(lines):
         line = lines[i]
         if not line.strip():
@@ -111,7 +111,20 @@ def render_md(text, slug):
             while i < len(lines) and re.match(r"^>\s?", lines[i]):
                 buf.append(re.sub(r"^>\s?", "", lines[i]))
                 i += 1
-            out.append("<blockquote>%s</blockquote>" % "".join("<p>%s</p>" % inline(p.strip()) for p in " ".join(buf).split("  ") if p.strip()))
+            out.append("<blockquote>%s</blockquote>" % render_md("\n".join(buf), slug))
+            continue
+        if line.lstrip().startswith("|") and i + 1 < len(lines) and re.match(r"^\s*\|?[\s:|-]+\|[\s:|-]*$", lines[i + 1]):
+            def cells(r):
+                return [c.strip() for c in r.strip().strip("|").split("|")]
+            head = cells(line)
+            i += 2
+            rows = []
+            while i < len(lines) and lines[i].lstrip().startswith("|"):
+                rows.append(cells(lines[i]))
+                i += 1
+            th = "".join("<th>%s</th>" % inline(c) for c in head)
+            tr = "".join("<tr>%s</tr>" % "".join("<td data-label=\"%s\">%s</td>" % (esc(head[n]) if n < len(head) else "", inline(c)) for n, c in enumerate(r)) for r in rows)
+            out.append('<div class="table-wrap"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>' % (th, tr))
             continue
         ul, ol = re.match(r"^[-*]\s+(.*)$", line), re.match(r"^\d+[.)]\s+(.*)$", line)
         if ul or ol:
@@ -172,6 +185,7 @@ def parse_post(path):
         "title": meta["title"],
         "date": date,
         "excerpt": excerpt,
+        "description": meta.get("description") or excerpt,
         "image": image_src(image, slug) if image else "",
         "image_alt": meta.get("image_alt", ""),
         "author": meta.get("author", DEFAULT_AUTHOR),
@@ -182,7 +196,7 @@ def parse_post(path):
 
 
 def special_line(p):
-    return bool(re.match(r"^(#{1,3}\s|>|[-*]\s|\d+[.)]\s|-{3,}|!\[)", p.strip()))
+    return bool(re.match(r"^(\||#{1,3}\s|>|[-*]\s|\d+[.)]\s|-{3,}|!\[)", p.strip()))
 
 
 def fmt_date(d):
@@ -409,7 +423,7 @@ def main():
         newer = posts[n - 1] if n > 0 else None
         older = posts[n + 1] if n + 1 < len(posts) else None
         (out / ("%s.html" % p["slug"])).write_text(page(
-            chrome, title="%s | The Zero Miles Meat Company" % p["title"], description=p["excerpt"],
+            chrome, title="%s | The Zero Miles Meat Company" % p["title"], description=p["description"],
             path="/blog/%s.html" % p["slug"], main=post_main(p, newer, older), og_type="article",
             og_image=p["image"], extra_head=jsonld(p)), encoding="utf-8")
 
