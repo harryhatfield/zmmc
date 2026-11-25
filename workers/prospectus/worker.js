@@ -1,7 +1,8 @@
-// Website enquiries (franchise prospectus, Associate Program and food buyer field guide):
+// Website enquiries (franchise prospectus, Associate Program, food buyer field guide and webinar registrations):
 // form -> Resend automation + Google Sheet row + team alert email.
 // Secrets (set in Cloudflare, never in this file): RESEND_API_KEY, SHEET_WEBHOOK_URL, SHEET_SECRET
-// (franchise and Associate sheet) and BUYER_SHEET_WEBHOOK_URL, BUYER_SHEET_SECRET (food buyer sheet).
+// (franchise and Associate sheet), BUYER_SHEET_WEBHOOK_URL, BUYER_SHEET_SECRET (food buyer sheet) and
+// WEBINAR_SHEET_WEBHOOK_URL, WEBINAR_SHEET_SECRET (webinar sheet).
 // Settings: NOTIFY_TO (where alert emails go) and NOTIFY_FROM (their sender, e.g. "ZMMC Website <address>").
 // Binding: LEADS (KV namespace) for duplicate and rate-limit checks.
 
@@ -12,6 +13,7 @@ const ALLOWED_ORIGINS = [
 // Each form picks its flow with a hidden form_type field; anything else is a prospectus request.
 const FRANCHISE_SHEET_LINK = "https://docs.google.com/spreadsheets/d/1TPS0n_XklCvS9LL_A9jXnW_PjstbdfB4W465bQNyRt0/edit";
 const BUYER_SHEET_LINK = "https://docs.google.com/spreadsheets/d/1Yxuaibx3R72M-UBTG1pK__KLIFQeFa94Op435T0S7Xs/edit";
+const WEBINAR_SHEET_LINK = "https://docs.google.com/spreadsheets/d/1xhKFhwxSzs1ZRRN_u940FsQxMX3SI8yec-DKr0IsphQ/edit";
 const FLOWS = {
   prospectus: {
     sheet: { urlEnv: "SHEET_WEBHOOK_URL", secretEnv: "SHEET_SECRET", link: FRANCHISE_SHEET_LINK },
@@ -48,6 +50,19 @@ const FLOWS = {
     nextAction: "Field guide sent – follow up on quantities",
     startedLine: "Field guide email sent. The call booking follow-up goes out after 5 days.",
     failedWarning: "The field guide email did NOT send. Please email the guide to them manually.",
+  },
+  webinar: {
+    sheet: { urlEnv: "WEBINAR_SHEET_WEBHOOK_URL", secretEnv: "WEBINAR_SHEET_SECRET", link: WEBINAR_SHEET_LINK },
+    event: "webinar.registered",
+    // Registrants join the franchise interest segment (the automation also adds them, which covers existing contacts).
+    segmentId: "98f3a97d-8a6a-4314-84ed-4e8e088b85e6",
+    duplicateKey: "webinar",
+    defaultSource: "Webinar landing page",
+    title: "webinar registration",
+    subjectLabel: "webinar registration",
+    nextAction: "Thank-you email and booklet sent – send joining link before the webinar",
+    startedLine: "Thank-you email with the booklet sent. They have also been added to the Franchise Prospectus Requests segment.",
+    failedWarning: "The webinar thank-you email did NOT send. Please email the booklet and webinar details manually.",
   },
 };
 const DUPLICATE_WINDOW_SECONDS = 30 * 24 * 60 * 60;
@@ -98,6 +113,7 @@ export default {
       phone: field("phone"),
       location: field("area_of_interest") || field("area") || field("location"),
       farmType: field("farm_type"),
+      farmStatus: field("farm_status"),
       species: field("species"),
       business: field("business"),
       businessType: field("business_type"),
@@ -171,6 +187,7 @@ async function startSequence(env, flow, lead) {
       form_location: lead.formLocation,
       lead_source: lead.source,
       ...(lead.farmType && { farm_type: lead.farmType }),
+      ...(lead.farmStatus && { farm_status: lead.farmStatus }),
       ...(lead.location && { area: lead.location }),
       ...(lead.species && { species: lead.species }),
       ...(lead.business && { business: lead.business }),
@@ -207,6 +224,7 @@ async function addSheetRow(env, flow, lead, repeat) {
       email: lead.email,
       phone: lead.phone,
       location: lead.location,
+      farmStatus: lead.farmStatus,
       message: lead.message,
       source: lead.source,
       nextAction: repeat ? "" : flow.nextAction,
@@ -238,6 +256,7 @@ async function notifyTeam(env, flow, lead, repeat, status) {
     ["Weekly quantity", lead.quantity],
     ["Frequency", lead.frequency],
     ["Farm type", lead.farmType],
+    ["Currently farms", lead.farmStatus],
     ["Rears", lead.species],
     ["Message", lead.message],
     ["Source", lead.source],
